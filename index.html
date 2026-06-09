@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskYa — Contrata profesionales con confianza en Ecuador</title>
+<meta name="description" content="TaskYa es el marketplace ecuatoriano que conecta clientes con profesionales verificados. Publica tu proyecto, compara propuestas y paga seguro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TASKYA — Design System
+   Paleta: papel cálido + verde selva + ámbar "¡ya!"
+   ============================================================ */
+:root{
+  --paper:#FBF9F4;
+  --paper-2:#F4F0E6;
+  --ink:#0F1D17;
+  --ink-soft:#3D4A44;
+  --ink-mute:#6E7A74;
+  --green:#0E5A43;
+  --green-deep:#093A2C;
+  --green-dark:#062A20;
+  --mint:#DBF0E2;
+  --mint-2:#C2E5CF;
+  --amber:#FF8A1E;
+  --amber-soft:#FFB76B;
+  --amber-bg:#FFF1E0;
+  --line:rgba(15,29,23,.10);
+  --line-strong:rgba(15,29,23,.16);
+  --card:#FFFFFF;
+  --radius:22px;
+  --radius-lg:30px;
+  --shadow-sm:0 2px 10px rgba(9,42,32,.06);
+  --shadow-md:0 14px 40px rgba(9,42,32,.10);
+  --shadow-lg:0 30px 80px rgba(9,42,32,.18);
+  --font-display:"Bricolage Grotesque",sans-serif;
+  --font-body:"Instrument Sans",sans-serif;
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-spring:cubic-bezier(.34,1.45,.5,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--amber);color:var(--ink)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.container{width:min(1180px,calc(100% - 48px));margin-inline:auto}
+
+h1,h2,h3,.display{font-family:var(--font-display);font-weight:600;letter-spacing:-.02em;line-height:1.08}
+.serif-accent{font-style:italic;font-weight:500;color:var(--green)}
+
+/* ---------- Reveal-on-scroll ---------- */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+.reveal-scale{opacity:0;transform:translateY(26px) scale(.94);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
+.reveal-scale.in{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 1s var(--ease-out),transform 1s var(--ease-out)}
+.reveal-left.in{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 1s var(--ease-out),transform 1s var(--ease-out)}
+.reveal-right.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .reveal,.reveal-scale,.reveal-left,.reveal-right{opacity:1;transform:none;transition:none}
+  *{animation-duration:.001s !important}
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  width:min(1180px,calc(100% - 32px));
+  z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px 10px 20px;
+  border-radius:60px;
+  border:1px solid transparent;
+  transition:background .4s,border-color .4s,box-shadow .4s,backdrop-filter .4s;
+}
+.nav.scrolled{
+  background:rgba(251,249,244,.82);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-color:var(--line);
+  box-shadow:var(--shadow-sm);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:21px;letter-spacing:-.02em}
+.nav-logo .mark{
+  width:34px;height:34px;border-radius:11px;
+  background:linear-gradient(135deg,var(--green) 0%,var(--green-deep) 100%);
+  display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 16px rgba(14,90,67,.35);
+}
+.nav-logo .mark svg{width:18px;height:18px}
+.nav-logo em{font-style:normal;color:var(--amber)}
+.nav-links{display:flex;gap:6px;list-style:none}
+.nav-links a{
+  font-size:14.5px;font-weight:500;color:var(--ink-soft);
+  padding:8px 14px;border-radius:40px;transition:background .25s,color .25s;
+}
+.nav-links a:hover{background:rgba(14,90,67,.08);color:var(--ink)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;justify-content:center;
+  font-weight:600;font-size:15px;border-radius:50px;
+  padding:12px 24px;transition:transform .25s var(--ease-spring),box-shadow .3s,background .3s,color .3s;
+  white-space:nowrap;
+}
+.btn:active{transform:scale(.97)}
+.btn-dark{background:var(--ink);color:#fff;box-shadow:0 8px 20px rgba(15,29,23,.25)}
+.btn-dark:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(15,29,23,.3);background:var(--green-deep)}
+.btn-ghost{color:var(--ink);border:1.5px solid var(--line-strong);background:transparent}
+.btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+.btn-amber{background:var(--amber);color:var(--ink);box-shadow:0 10px 24px rgba(255,138,30,.35)}
+.btn-amber:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(255,138,30,.45)}
+.btn-white{background:#fff;color:var(--ink)}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.2)}
+.btn-sm{padding:9px 18px;font-size:14px}
+.nav-burger{display:none;flex-direction:column;gap:5px;padding:10px}
+.nav-burger span{width:22px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{position:relative;padding:148px 0 90px;overflow:hidden}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+}
+.hero-bg .blob{
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;
+  animation:blobFloat 14s ease-in-out infinite alternate;
+}
+.hero-bg .blob.b1{width:560px;height:560px;right:-120px;top:-80px;background:radial-gradient(circle,#9fd9b8 0%,transparent 70%)}
+.hero-bg .blob.b2{width:420px;height:420px;right:280px;top:240px;background:radial-gradient(circle,#ffd9ad 0%,transparent 70%);animation-delay:-5s}
+.hero-bg .grid-dots{
+  position:absolute;inset:0;
+  background-image:radial-gradient(rgba(15,29,23,.10) 1px,transparent 1px);
+  background-size:26px 26px;
+  mask-image:radial-gradient(ellipse 60% 55% at 18% 30%,#000 0%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse 60% 55% at 18% 30%,#000 0%,transparent 70%);
+}
+@keyframes blobFloat{
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(-36px,30px) scale(1.08)}
+}
+.hero-inner{
+  position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;
+}
+.hero-rating{
+  display:inline-flex;align-items:center;gap:10px;
+  background:#fff;border:1px solid var(--line);border-radius:40px;
+  padding:7px 16px 7px 10px;font-size:13.5px;font-weight:600;color:var(--ink-soft);
+  box-shadow:var(--shadow-sm);margin-bottom:26px;
+}
+.hero-rating .stars{color:var(--amber);letter-spacing:1px;font-size:13px}
+.hero-rating .pill{
+  background:var(--mint);color:var(--green-deep);border-radius:30px;
+  padding:3px 10px;font-size:12px;font-weight:700;
+}
+.hero h1{font-size:clamp(42px,6vw,76px);font-weight:700;margin-bottom:24px}
+.hero h1 .underline-amber{position:relative;white-space:nowrap}
+.hero h1 .underline-amber svg{
+  position:absolute;left:0;bottom:-6px;width:100%;height:14px;
+}
+.hero h1 .underline-amber svg path{
+  stroke:var(--amber);stroke-width:5;fill:none;stroke-linecap:round;
+  stroke-dasharray:300;stroke-dashoffset:300;
+}
+.hero.loaded .underline-amber svg path{animation:drawLine 1s .9s var(--ease-out) forwards}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+.hero-sub{font-size:18px;color:var(--ink-mute);max-width:480px;margin-bottom:34px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px}
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap}
+.hero-stat .num{font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-.02em}
+.hero-stat .num em{font-style:normal;color:var(--green)}
+.hero-stat .lbl{font-size:13px;color:var(--ink-mute);font-weight:500}
+
+/* stagger de entrada del hero */
+.hero [data-h]{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
+.hero.loaded [data-h]{opacity:1;transform:none}
+.hero.loaded [data-h="1"]{transition-delay:.05s}
+.hero.loaded [data-h="2"]{transition-delay:.15s}
+.hero.loaded [data-h="3"]{transition-delay:.28s}
+.hero.loaded [data-h="4"]{transition-delay:.4s}
+.hero.loaded [data-h="5"]{transition-delay:.52s}
+.hero.loaded [data-h="6"]{transition-delay:.45s}
+
+/* --- Panel visual derecho --- */
+.hero-visual{position:relative;height:620px}
+.hero-panel{
+  position:absolute;inset:0;border-radius:var(--radius-lg);
+  background:linear-gradient(160deg,#0E5A43 0%,#093A2C 55%,#0B2E24 100%);
+  overflow:hidden;box-shadow:var(--shadow-lg);
+}
+.hero-panel::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 10%,rgba(255,183,107,.35) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 10% 90%,rgba(194,229,207,.22) 0%,transparent 60%);
+}
+.hero-panel .noise{
+  position:absolute;inset:0;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+.hero-panel .ring{
+  position:absolute;border:1.5px solid rgba(255,255,255,.14);border-radius:50%;
+}
+.hero-panel .ring.r1{width:480px;height:480px;right:-140px;bottom:-160px}
+.hero-panel .ring.r2{width:340px;height:340px;right:-70px;bottom:-90px}
+
+/* --- Teléfono mockup --- */
+.phone{
+  position:absolute;left:50%;top:54%;transform:translate(-50%,-50%) rotate(-3deg);
+  width:280px;height:560px;border-radius:42px;
+  background:#0c1512;padding:10px;
+  box-shadow:0 50px 100px rgba(0,0,0,.5),inset 0 0 0 2px rgba(255,255,255,.08);
+  transition:transform .2s linear;
+}
+.phone-screen{
+  width:100%;height:100%;border-radius:34px;overflow:hidden;
+  background:var(--paper);position:relative;display:flex;flex-direction:column;
+}
+.phone-notch{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:86px;height:24px;background:#0c1512;border-radius:20px;z-index:5;
+}
+.app-head{
+  background:linear-gradient(135deg,var(--green) 0%,var(--green-deep) 100%);
+  padding:48px 18px 18px;color:#fff;
+}
+.app-head .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.app-head .hello{font-size:11px;opacity:.75}
+.app-head .name{font-family:var(--font-display);font-weight:600;font-size:15px}
+.app-avatar{width:32px;height:32px;border-radius:50%;background:var(--amber);display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--ink)}
+.app-balance-card{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+  border-radius:16px;padding:13px 15px;backdrop-filter:blur(6px);
+}
+.app-balance-card .lbl{font-size:10.5px;opacity:.75;letter-spacing:.04em;text-transform:uppercase}
+.app-balance-card .amt{font-family:var(--font-display);font-size:25px;font-weight:700;letter-spacing:-.01em}
+.app-balance-card .delta{font-size:10.5px;color:#9fe8bc;font-weight:600}
+.app-section{padding:14px 16px 8px;font-size:11px;font-weight:700;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase}
+.app-list{padding:0 12px;display:flex;flex-direction:column;gap:8px}
+.app-item{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:10px 12px;display:flex;align-items:center;gap:10px;
+}
+.app-item .ic{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:15px;flex-shrink:0;
+}
+.app-item .tx{flex:1;min-width:0}
+.app-item .t1{font-size:12.5px;font-weight:600;line-height:1.25}
+.app-item .t2{font-size:10.5px;color:var(--ink-mute)}
+.app-item .amt{font-size:12.5px;font-weight:700}
+.app-item .amt.ok{color:var(--green)}
+.app-tabbar{
+  margin-top:auto;display:flex;justify-content:space-around;align-items:center;
+  border-top:1px solid var(--line);padding:11px 0 16px;background:#fff;
+}
+.app-tabbar span{width:22px;height:22px;border-radius:7px;background:var(--paper-2)}
+.app-tabbar span.active{background:var(--green)}
+
+/* --- chips flotantes --- */
+.float-chip{
+  position:absolute;background:#fff;border-radius:16px;box-shadow:var(--shadow-md);
+  padding:12px 16px;display:flex;align-items:center;gap:11px;
+  border:1px solid var(--line);
+  animation:chipFloat 5.5s ease-in-out infinite alternate;
+  transition:transform .2s linear;
+}
+@keyframes chipFloat{from{translate:0 0}to{translate:0 -14px}}
+.float-chip .dot{
+  width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:17px;flex-shrink:0;
+}
+.float-chip .t1{font-size:13px;font-weight:700;line-height:1.2}
+.float-chip .t2{font-size:11.5px;color:var(--ink-mute)}
+.chip-1{top:54px;left:-30px;animation-delay:-1s}
+.chip-2{bottom:120px;right:-26px;animation-delay:-3s}
+.chip-3{bottom:-18px;left:24px;animation-delay:-2s}
+
+/* ============================================================
+   MARQUEE de categorías
+   ============================================================ */
+.marquee-band{
+  background:var(--ink);color:var(--paper);
+  padding:18px 0;overflow:hidden;transform:rotate(-1.2deg) scale(1.02);
+  margin:50px 0 0;
+}
+.marquee-track{display:flex;gap:0;width:max-content;animation:marquee 38s linear infinite}
+.marquee-band:hover .marquee-track{animation-play-state:paused}
+.marquee-track .mi{
+  display:flex;align-items:center;gap:18px;padding:0 18px;
+  font-family:var(--font-display);font-size:17px;font-weight:500;white-space:nowrap;
+}
+.marquee-track .mi .star{color:var(--amber);font-size:14px}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ============================================================
+   SECCIONES GENERALES
+   ============================================================ */
+.section{padding:110px 0}
+.section-head{text-align:center;max-width:680px;margin:0 auto 64px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--green);margin-bottom:18px;
+}
+.eyebrow::before,.eyebrow::after{content:"";width:24px;height:1.5px;background:var(--amber)}
+.section-head h2{font-size:clamp(32px,4.4vw,52px);margin-bottom:18px}
+.section-head p{color:var(--ink-mute);font-size:17px}
+
+/* ============================================================
+   BENTO — "Tu proyecto, en buenas manos"
+   ============================================================ */
+.bento{display:grid;grid-template-columns:1.15fr .85fr 1fr;gap:22px}
+.bento-card{
+  border-radius:var(--radius-lg);border:1px solid var(--line);
+  background:var(--card);overflow:hidden;position:relative;
+  transition:transform .4s var(--ease-out),box-shadow .4s;
+}
+.bento-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.bento-card .pad{padding:28px}
+.bento-card h3{font-size:21px;margin-bottom:8px}
+.bento-card .desc{font-size:14.5px;color:var(--ink-mute)}
+.bento-list{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.b-item{
+  display:flex;align-items:center;gap:12px;background:var(--paper);
+  border:1px solid var(--line);border-radius:16px;padding:12px 14px;
+  transition:transform .3s var(--ease-out),border-color .3s;
+}
+.bento-card:hover .b-item:nth-child(2){transform:translateX(6px)}
+.b-item .ic{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:17px;flex-shrink:0}
+.b-item .tx{flex:1}
+.b-item .t1{font-size:13.5px;font-weight:600;line-height:1.3}
+.b-item .t2{font-size:11.5px;color:var(--ink-mute)}
+.b-item .price{font-weight:700;font-size:14px;color:var(--green)}
+.bento-mid{
+  background:linear-gradient(170deg,#FFB76B 0%,#FF8A1E 70%);
+  color:var(--ink);display:flex;flex-direction:column;
+}
+.bento-mid .ill{
+  flex:1;display:grid;place-items:center;padding:30px 20px 0;position:relative;
+}
+.bento-mid .badge-24{
+  background:rgba(255,255,255,.9);border-radius:20px;padding:20px 26px;
+  text-align:center;box-shadow:0 16px 36px rgba(140,70,0,.25);
+  transform:rotate(-3deg);transition:transform .4s var(--ease-spring);
+}
+.bento-card:hover .badge-24{transform:rotate(2deg) scale(1.04)}
+.bento-mid .badge-24 .big{font-family:var(--font-display);font-size:42px;font-weight:800;line-height:1}
+.bento-mid .badge-24 .sm{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.bento-dark{
+  background:linear-gradient(165deg,var(--green) 0%,var(--green-dark) 100%);color:#fff;
+}
+.bento-dark h3{color:#fff}
+.bento-dark .desc{color:rgba(255,255,255,.65)}
+.bento-dark .b-item{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)}
+.bento-dark .b-item .t2{color:rgba(255,255,255,.55)}
+.bento-dark .b-item .price{color:#9fe8bc}
+.progress-pill{
+  margin-top:18px;background:rgba(255,255,255,.1);border-radius:40px;
+  padding:6px;display:flex;align-items:center;gap:10px;
+}
+.progress-pill .bar{flex:1;height:8px;border-radius:10px;background:rgba(255,255,255,.15);overflow:hidden}
+.progress-pill .bar i{
+  display:block;height:100%;width:0;border-radius:10px;
+  background:linear-gradient(90deg,var(--amber-soft),var(--amber));
+  transition:width 1.4s .3s var(--ease-out);
+}
+.in .progress-pill .bar i{width:78%}
+.progress-pill .pct{font-size:12px;font-weight:700;padding-right:8px}
+
+/* ============================================================
+   PASOS — "en tres simples pasos"
+   ============================================================ */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:step}
+.step-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:30px;position:relative;overflow:hidden;
+  transition:transform .4s var(--ease-out),box-shadow .4s,border-color .4s;
+}
+.step-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-md);border-color:var(--mint-2)}
+.step-num{
+  font-family:var(--font-display);font-size:15px;font-weight:700;
+  width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+  background:var(--mint);color:var(--green-deep);margin-bottom:60px;
+  transition:background .3s,color .3s,transform .4s var(--ease-spring);
+}
+.step-card:hover .step-num{background:var(--amber);color:var(--ink);transform:rotate(-8deg) scale(1.1)}
+.step-visual{height:150px;display:grid;place-items:center;margin-bottom:26px;position:relative}
+.step-card h3{font-size:21px;margin-bottom:10px}
+.step-card p{font-size:14.5px;color:var(--ink-mute)}
+/* mini-visual 1: formulario */
+.mini-form{width:200px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow-sm)}
+.mini-form .f-line{height:9px;border-radius:6px;background:var(--paper-2);margin-bottom:9px}
+.mini-form .f-line.w60{width:60%}
+.mini-form .f-line.w85{width:85%}
+.mini-form .f-btn{height:26px;border-radius:8px;background:var(--green);margin-top:4px;position:relative;overflow:hidden}
+.mini-form .f-btn::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+  transform:translateX(-100%);
+}
+.step-card:hover .f-btn::after{animation:shine 1s var(--ease-out)}
+@keyframes shine{to{transform:translateX(100%)}}
+/* mini-visual 2: propuestas apiladas */
+.mini-stack{position:relative;width:210px;height:120px}
+.mini-stack .pcard{
+  position:absolute;left:0;right:0;background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:10px 13px;display:flex;align-items:center;gap:10px;
+  box-shadow:var(--shadow-sm);transition:transform .4s var(--ease-spring);
+}
+.mini-stack .pcard .av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.mini-stack .pcard .ln{flex:1}
+.mini-stack .pcard .l1{height:7px;width:70%;border-radius:5px;background:var(--paper-2);margin-bottom:5px}
+.mini-stack .pcard .l2{height:6px;width:45%;border-radius:5px;background:var(--paper-2)}
+.mini-stack .pcard .pr{font-size:12px;font-weight:700;color:var(--green)}
+.mini-stack .pcard:nth-child(1){top:0;z-index:3}
+.mini-stack .pcard:nth-child(2){top:38px;z-index:2;scale:.95;opacity:.8}
+.mini-stack .pcard:nth-child(3){top:74px;z-index:1;scale:.9;opacity:.55}
+.step-card:hover .pcard:nth-child(1){transform:translateY(-6px) rotate(-1.5deg)}
+.step-card:hover .pcard:nth-child(2){transform:translateY(-3px)}
+/* mini-visual 3: pago protegido */
+.mini-pay{width:200px;background:linear-gradient(150deg,var(--green),var(--green-dark));border-radius:18px;padding:16px;color:#fff;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.mini-pay .lock{font-size:20px;margin-bottom:8px}
+.mini-pay .p1{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.05em}
+.mini-pay .p2{font-family:var(--font-display);font-size:24px;font-weight:700}
+.mini-pay .check{
+  position:absolute;right:12px;bottom:12px;width:34px;height:34px;border-radius:50%;
+  background:var(--amber);display:grid;place-items:center;color:var(--ink);font-weight:800;
+  transition:transform .4s var(--ease-spring);
+}
+.step-card:hover .mini-pay .check{transform:scale(1.18) rotate(8deg)}
+
+/* ============================================================
+   SHOWCASE — banner grande con teléfonos
+   ============================================================ */
+.showcase{
+  border-radius:40px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#0B3B2E 0%,#062A20 100%);
+  color:#fff;padding:90px 60px 0;text-align:center;
+}
+.showcase::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 110%,rgba(255,138,30,.28) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 15% 0%,rgba(194,229,207,.15) 0%,transparent 60%);
+}
+.showcase h2{font-size:clamp(32px,4.4vw,54px);position:relative;margin-bottom:16px}
+.showcase h2 em{font-style:italic;font-weight:500;color:var(--amber-soft)}
+.showcase p{position:relative;color:rgba(255,255,255,.65);max-width:560px;margin:0 auto 60px;font-size:17px}
+.showcase-phones{position:relative;height:420px;max-width:760px;margin:0 auto}
+.sc-phone{
+  position:absolute;width:250px;border-radius:36px 36px 0 0;
+  background:#0c1512;padding:9px 9px 0;box-shadow:0 -30px 80px rgba(0,0,0,.45);
+}
+.sc-phone .scr{border-radius:28px 28px 0 0;overflow:hidden;background:var(--paper);height:411px}
+.sc-phone.left{left:6%;bottom:-40px;transform:rotate(-7deg);z-index:1}
+.sc-phone.right{right:6%;bottom:-60px;transform:rotate(6deg);z-index:1}
+.sc-phone.center{left:50%;bottom:0;transform:translateX(-50%);z-index:2;width:270px}
+.sc-mini-head{background:linear-gradient(135deg,var(--green),var(--green-deep));padding:34px 14px 14px;color:#fff}
+.sc-mini-head .t{font-family:var(--font-display);font-weight:600;font-size:14px}
+.sc-mini-head .s{font-size:10px;opacity:.7}
+.sc-pad{padding:12px;display:flex;flex-direction:column;gap:8px}
+.sc-row{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 11px;display:flex;align-items:center;gap:9px}
+.sc-row .ic{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:13px;flex-shrink:0}
+.sc-row .l1{font-size:11px;font-weight:600;line-height:1.25}
+.sc-row .l2{font-size:9.5px;color:var(--ink-mute)}
+.sc-row .star{margin-left:auto;font-size:10px;font-weight:700;color:var(--amber)}
+.sc-amber-card{background:linear-gradient(135deg,var(--amber-soft),var(--amber));border-radius:14px;padding:13px;color:var(--ink)}
+.sc-amber-card .a1{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.75}
+.sc-amber-card .a2{font-family:var(--font-display);font-size:20px;font-weight:800}
+
+/* ============================================================
+   PROTECCIÓN — grid de confianza
+   ============================================================ */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.trust-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:30px;transition:transform .4s var(--ease-out),box-shadow .4s;
+  position:relative;overflow:hidden;
+}
+.trust-card::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+  background:linear-gradient(90deg,var(--green),var(--amber));
+  transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease-out);
+}
+.trust-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.trust-card:hover::after{transform:scaleX(1)}
+.trust-card.wide{grid-column:span 1}
+.trust-ic{
+  width:52px;height:52px;border-radius:16px;display:grid;place-items:center;
+  margin-bottom:20px;font-size:22px;
+  transition:transform .4s var(--ease-spring);
+}
+.trust-card:hover .trust-ic{transform:rotate(-6deg) scale(1.08)}
+.trust-card h3{font-size:19px;margin-bottom:10px}
+.trust-card p{font-size:14.5px;color:var(--ink-mute)}
+
+/* ============================================================
+   CATEGORÍAS
+   ============================================================ */
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cat-card{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:24px 22px;display:flex;flex-direction:column;gap:14px;
+  transition:transform .35s var(--ease-out),box-shadow .35s,background .35s;
+  cursor:pointer;
+}
+.cat-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);background:var(--green-dark);color:#fff}
+.cat-card:hover .cat-n{color:rgba(255,255,255,.6)}
+.cat-card .em{font-size:28px;line-height:1}
+.cat-card .nm{font-family:var(--font-display);font-weight:600;font-size:16.5px}
+.cat-card .cat-n{font-size:12.5px;color:var(--ink-mute);font-weight:500;transition:color .35s}
+
+/* ============================================================
+   PRECIOS
+   ============================================================ */
+.pricing-wrap{position:relative}
+.pricing-tag{
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%) rotate(-2deg);
+  background:var(--amber);color:var(--ink);font-weight:700;font-size:13px;
+  padding:8px 18px;border-radius:40px;z-index:5;box-shadow:0 8px 20px rgba(255,138,30,.4);
+}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+.price-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:36px 32px;display:flex;flex-direction:column;
+  transition:transform .4s var(--ease-out),box-shadow .4s;
+}
+.price-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.price-card .tier{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:18px}
+.price-card .amount{font-family:var(--font-display);font-size:54px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.price-card .amount span{font-size:17px;font-weight:500;color:var(--ink-mute);letter-spacing:0}
+.price-card .blurb{font-size:14px;color:var(--ink-mute);margin:14px 0 26px}
+.price-card ul{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:30px;flex:1}
+.price-card li{display:flex;gap:10px;font-size:14.5px;align-items:flex-start}
+.price-card li::before{
+  content:"✓";flex-shrink:0;width:20px;height:20px;border-radius:50%;
+  background:var(--mint);color:var(--green-deep);font-size:11px;font-weight:800;
+  display:grid;place-items:center;margin-top:2px;
+}
+.price-card.featured{
+  background:linear-gradient(165deg,var(--green) 0%,var(--green-dark) 100%);
+  color:#fff;border:none;box-shadow:var(--shadow-lg);
+  transform:scale(1.04);
+}
+.price-card.featured:hover{transform:scale(1.04) translateY(-8px)}
+.price-card.featured .tier{color:var(--amber-soft)}
+.price-card.featured .amount span,.price-card.featured .blurb{color:rgba(255,255,255,.6)}
+.price-card.featured li::before{background:rgba(255,255,255,.15);color:var(--amber-soft)}
+
+/* ============================================================
+   TESTIMONIOS
+   ============================================================ */
+.testis{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.testi{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:28px;display:flex;flex-direction:column;gap:18px;
+  transition:transform .35s var(--ease-out),box-shadow .35s;
+}
+.testi:hover{transform:translateY(-5px) rotate(-.4deg);box-shadow:var(--shadow-md)}
+.testi .stars{color:var(--amber);font-size:14px;letter-spacing:2px}
+.testi .quote{font-size:15.5px;line-height:1.65;color:var(--ink-soft)}
+.testi .quote strong{color:var(--ink)}
+.testi .who{display:flex;align-items:center;gap:12px;margin-top:auto}
+.testi .av{
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  font-weight:700;font-size:15px;color:#fff;flex-shrink:0;
+}
+.testi .wn{font-weight:700;font-size:14.5px}
+.testi .wr{font-size:12.5px;color:var(--ink-mute)}
+.testi.dark-t{background:var(--green-dark);color:#fff;border:none}
+.testi.dark-t .quote{color:rgba(255,255,255,.78)}
+.testi.dark-t .quote strong{color:#fff}
+.testi.dark-t .wr{color:rgba(255,255,255,.5)}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-wrap{max-width:760px;margin:0 auto}
+.faq-item{
+  background:var(--card);border:1px solid var(--line);border-radius:18px;
+  margin-bottom:12px;overflow:hidden;transition:border-color .3s,box-shadow .3s;
+}
+.faq-item.open{border-color:var(--green);box-shadow:var(--shadow-sm)}
+.faq-q{
+  width:100%;display:flex;align-items:center;gap:16px;text-align:left;
+  padding:22px 24px;font-size:16.5px;font-weight:600;color:var(--ink);
+  font-family:var(--font-body);
+}
+.faq-q .qic{
+  width:34px;height:34px;border-radius:11px;background:var(--mint);color:var(--green-deep);
+  display:grid;place-items:center;font-size:15px;flex-shrink:0;transition:background .3s,color .3s;
+}
+.faq-item.open .qic{background:var(--green);color:#fff}
+.faq-q .chev{
+  margin-left:auto;flex-shrink:0;transition:transform .4s var(--ease-out);
+  color:var(--ink-mute);
+}
+.faq-item.open .chev{transform:rotate(180deg);color:var(--green)}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .5s var(--ease-out);
+}
+.faq-a-inner{padding:0 24px 24px 74px;font-size:15px;color:var(--ink-mute);line-height:1.7}
+
+/* ============================================================
+   CTA FINAL
+   ============================================================ */
+.cta-final{
+  border-radius:40px;overflow:hidden;position:relative;
+  background:linear-gradient(150deg,#0E5A43 0%,#093A2C 45%,#FF8A1E 160%);
+  color:#fff;padding:80px 64px;
+  display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:40px;
+}
+.cta-final::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 90% 100%,rgba(255,138,30,.45) 0%,transparent 60%);
+}
+.cta-final h2{font-size:clamp(30px,4vw,48px);margin-bottom:18px;position:relative}
+.cta-final p{color:rgba(255,255,255,.7);margin-bottom:32px;max-width:440px;position:relative;font-size:16.5px}
+.cta-final .actions{display:flex;gap:14px;flex-wrap:wrap;position:relative}
+.cta-mini-phone{
+  position:relative;justify-self:center;
+  width:240px;border-radius:34px;background:#0c1512;padding:9px;
+  box-shadow:0 40px 90px rgba(0,0,0,.4);transform:rotate(4deg);
+  transition:transform .6s var(--ease-spring);
+}
+.cta-final:hover .cta-mini-phone{transform:rotate(0deg) translateY(-8px)}
+.cta-mini-phone .scr{border-radius:26px;overflow:hidden;background:var(--paper);height:380px}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  margin-top:110px;background:linear-gradient(180deg,var(--paper) 0%,var(--mint) 120%);
+  border-top:1px solid var(--line);overflow:hidden;
+}
+.footer-top{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px;
+  padding:70px 0 50px;
+}
+.footer h4{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:18px}
+.footer ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.footer ul a{font-size:14.5px;color:var(--ink-soft);transition:color .25s}
+.footer ul a:hover{color:var(--green)}
+.footer-brand p{font-size:14.5px;color:var(--ink-mute);margin:16px 0 22px;max-width:280px}
+.social{display:flex;gap:10px}
+.social a{
+  width:38px;height:38px;border-radius:12px;border:1px solid var(--line-strong);
+  display:grid;place-items:center;transition:background .3s,color .3s,transform .3s;
+  font-size:14px;font-weight:700;
+}
+.social a:hover{background:var(--ink);color:#fff;transform:translateY(-3px)}
+.footer-legal{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:22px 0;border-top:1px solid var(--line);font-size:13px;color:var(--ink-mute);
+  flex-wrap:wrap;
+}
+.giant-word{
+  font-family:var(--font-display);font-weight:800;text-align:center;
+  font-size:clamp(80px,16.5vw,250px);line-height:.85;letter-spacing:-.03em;
+  padding:30px 0 0;margin-bottom:-.12em;
+  background:linear-gradient(180deg,var(--green) 0%,rgba(14,90,67,.05) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  user-select:none;
+}
+.giant-word span{display:inline-block;transform:translateY(60%);opacity:0;transition:transform 1s var(--ease-out),opacity 1s var(--ease-out)}
+.giant-word.in span{transform:translateY(0);opacity:1}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:60px}
+  .hero-visual{height:560px;max-width:540px;margin:0 auto;width:100%}
+  .bento{grid-template-columns:1fr 1fr}
+  .bento-card:first-child{grid-column:span 2}
+  .steps{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr 1fr}
+  .cats{grid-template-columns:repeat(3,1fr)}
+  .pricing{grid-template-columns:1fr;max-width:480px;margin:0 auto}
+  .price-card.featured{transform:none}
+  .price-card.featured:hover{transform:translateY(-8px)}
+  .testis{grid-template-columns:1fr 1fr}
+  .cta-final{grid-template-columns:1fr;text-align:center;padding:60px 36px}
+  .cta-final p{margin-inline:auto}
+  .cta-final .actions{justify-content:center}
+  .cta-mini-phone{display:none}
+  .footer-top{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .nav-links{display:none}
+  .nav-cta .btn-ghost{display:none}
+  .hero{padding-top:120px}
+  .hero h1{font-size:clamp(38px,10.5vw,52px)}
+  .hero-stats{gap:22px}
+  .bento{grid-template-columns:1fr}
+  .bento-card:first-child{grid-column:span 1}
+  .trust-grid{grid-template-columns:1fr}
+  .cats{grid-template-columns:1fr 1fr}
+  .testis{grid-template-columns:1fr}
+  .section{padding:70px 0}
+  .showcase{padding:60px 24px 0}
+  .sc-phone.left,.sc-phone.right{display:none}
+  .showcase-phones{height:340px}
+  .footer-top{grid-template-columns:1fr;gap:32px}
+  .chip-1{left:-8px}
+  .chip-2{right:-8px}
+  .float-chip{padding:9px 12px}
+  .float-chip .dot{width:30px;height:30px;font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">
+    <span class="mark">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 6.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    Task<em>Ya</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#como-funciona">Cómo funciona</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#seguridad">Seguridad</a></li>
+    <li><a href="#precios">Precios</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn btn-ghost btn-sm">Iniciar sesión</a>
+    <a href="#cta" class="btn btn-dark btn-sm">Publicar proyecto</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="grid-dots"></div>
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <div class="hero-rating" data-h="1">
+        <span class="pill">4.9</span>
+        <span class="stars">★★★★★</span>
+        <span>+2.400 servicios completados</span>
+      </div>
+      <h1 data-h="2">
+        Contrata <span class="serif-accent">talento</span> con
+        <span class="underline-amber">confianza
+          <svg viewBox="0 0 200 14" preserveAspectRatio="none"><path d="M4 10 Q 60 2 110 8 T 196 6"/></svg>
+        </span>
+        y rapidez
+      </h1>
+      <p class="hero-sub" data-h="3">
+        TaskYa conecta tus proyectos con los mejores profesionales del Ecuador.
+        Publica lo que necesitas, compara propuestas y paga con protección — todo en un solo lugar.
+      </p>
+      <div class="hero-actions" data-h="4">
+        <a href="#cta" class="btn btn-dark">Publicar un proyecto</a>
+        <a href="#precios" class="btn btn-ghost">Soy profesional →</a>
+      </div>
+      <div class="hero-stats" data-h="5">
+        <div class="hero-stat">
+          <div class="num"><em>+</em><span class="counter" data-target="5000">0</span></div>
+          <div class="lbl">Profesionales verificados</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num"><span class="counter" data-target="40">0</span><em>+</em></div>
+          <div class="lbl">Categorías de servicios</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">$<span class="counter" data-target="50">0</span>k<em>+</em></div>
+          <div class="lbl">Pagados con protección</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" data-h="6">
+      <div class="hero-panel">
+        <div class="noise"></div>
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+      </div>
+
+      <div class="phone" id="heroPhone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="app-head">
+            <div class="row">
+              <div>
+                <div class="hello">Buenos días 👋</div>
+                <div class="name">María Fernanda</div>
+              </div>
+              <div class="app-avatar">MF</div>
+            </div>
+            <div class="app-balance-card">
+              <div class="lbl">En custodia segura</div>
+              <div class="amt">$1.240,00</div>
+              <div class="delta">↑ 2 proyectos activos</div>
+            </div>
+          </div>
+          <div class="app-section">Propuestas recientes</div>
+          <div class="app-list">
+            <div class="app-item">
+              <div class="ic" style="background:var(--mint)">🎨</div>
+              <div class="tx">
+                <div class="t1">Diseño de logotipo</div>
+                <div class="t2">Andrés C. · ★ 4.9</div>
+              </div>
+              <div class="amt">$120</div>
+            </div>
+            <div class="app-item">
+              <div class="ic" style="background:var(--amber-bg)">🔧</div>
+              <div class="tx">
+                <div class="t1">Instalación eléctrica</div>
+                <div class="t2">Vladimir T. · ★ 5.0</div>
+              </div>
+              <div class="amt">$85</div>
+            </div>
+            <div class="app-item">
+              <div class="ic" style="background:#E5EDFF">💻</div>
+              <div class="tx">
+                <div class="t1">Tienda en línea</div>
+                <div class="t2">Soluciones Web · ★ 4.8</div>
+              </div>
+              <div class="amt ok">$650</div>
+            </div>
+          </div>
+          <div class="app-tabbar">
+            <span class="active"></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="float-chip chip-1">
+        <div class="dot" style="background:var(--mint)">📨</div>
+        <div>
+          <div class="t1">Nueva propuesta</div>
+          <div class="t2">Hace 2 minutos</div>
+        </div>
+      </div>
+      <div class="float-chip chip-2">
+        <div class="dot" style="background:var(--amber-bg)">🛡️</div>
+        <div>
+          <div class="t1">Pago protegido</div>
+          <div class="t2">Liberado al confirmar</div>
+        </div>
+      </div>
+      <div class="float-chip chip-3">
+        <div class="dot" style="background:#E9F9EF">✓</div>
+        <div>
+          <div class="t1">Trabajo completado</div>
+          <div class="t2">★★★★★ — “¡Excelente!”</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- banda marquee -->
+  <div class="marquee-band">
+    <div class="marquee-track" id="marquee">
+      <div class="mi"><span class="star">✦</span> Arquitectos</div>
+      <div class="mi"><span class="star">✦</span> Abogados</div>
+      <div class="mi"><span class="star">✦</span> Programadores</div>
+      <div class="mi"><span class="star">✦</span> Diseñadores gráficos</div>
+      <div class="mi"><span class="star">✦</span> Electricistas</div>
+      <div class="mi"><span class="star">✦</span> Contadores</div>
+      <div class="mi"><span class="star">✦</span> Fotógrafos</div>
+      <div class="mi"><span class="star">✦</span> Plomeros</div>
+      <div class="mi"><span class="star">✦</span> Community Managers</div>
+      <div class="mi"><span class="star">✦</span> Consultores</div>
+      <div class="mi"><span class="star">✦</span> Ingenieros</div>
+      <div class="mi"><span class="star">✦</span> Técnicos especializados</div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= BENTO ================= -->
+<section class="section" id="servicios">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">La plataforma</div>
+      <h2>Tu proyecto, <span class="serif-accent">en buenas manos</span></h2>
+      <p>Creada para que contratar servicios profesionales en Ecuador sea claro, seguro y sin complicaciones.</p>
+    </div>
+
+    <div class="bento">
+      <div class="bento-card reveal" data-delay="0">
+        <div class="pad">
+          <h3>Solicitudes en tiempo real</h3>
+          <p class="desc">Publica lo que necesitas y mira llegar las propuestas, organizadas y comparables.</p>
+          <div class="bento-list">
+            <div class="b-item">
+              <div class="ic" style="background:var(--mint)">🏠</div>
+              <div class="tx">
+                <div class="t1">Remodelación de cocina</div>
+                <div class="t2">5 propuestas · Quito</div>
+              </div>
+              <div class="price">$1.800</div>
+            </div>
+            <div class="b-item">
+              <div class="ic" style="background:var(--amber-bg)">📸</div>
+              <div class="tx">
+                <div class="t1">Fotografía de producto</div>
+                <div class="t2">8 propuestas · Guayaquil</div>
+              </div>
+              <div class="price">$240</div>
+            </div>
+            <div class="b-item">
+              <div class="ic" style="background:#E5EDFF">⚖️</div>
+              <div class="tx">
+                <div class="t1">Asesoría legal mercantil</div>
+                <div class="t2">3 propuestas · Cuenca</div>
+              </div>
+              <div class="price">$150</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bento-card bento-mid reveal" data-delay="120">
+        <div class="ill">
+          <div class="badge-24">
+            <div class="big">24/7</div>
+            <div class="sm">Soporte humano</div>
+          </div>
+        </div>
+        <div class="pad">
+          <h3>Siempre disponible</h3>
+          <p class="desc" style="color:rgba(15,29,23,.65)">Acompañamos cada contratación, en cualquier momento y sin demoras.</p>
+        </div>
+      </div>
+
+      <div class="bento-card bento-dark reveal" data-delay="240">
+        <div class="pad">
+          <h3>Pagos con custodia</h3>
+          <p class="desc">Tu dinero queda protegido y solo se libera cuando confirmas que el trabajo está completo.</p>
+          <div class="bento-list">
+            <div class="b-item">
+              <div class="ic" style="background:rgba(255,255,255,.12)">🔒</div>
+              <div class="tx">
+                <div class="t1">Pago en custodia</div>
+                <div class="t2">Tienda en línea — Etapa 2</div>
+              </div>
+              <div class="price">$325</div>
+            </div>
+            <div class="b-item">
+              <div class="ic" style="background:rgba(255,255,255,.12)">✓</div>
+              <div class="tx">
+                <div class="t1">Entrega confirmada</div>
+                <div class="t2">Pago liberado al profesional</div>
+              </div>
+              <div class="price">$85</div>
+            </div>
+          </div>
+          <div class="progress-pill">
+            <div class="bar"><i></i></div>
+            <div class="pct">78% avance</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PASOS ================= -->
+<section class="section" id="como-funciona" style="padding-top:40px">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Cómo funciona</div>
+      <h2>Contrata en <span class="serif-accent">tres simples pasos</span></h2>
+      <p>Diseñado para que cualquier persona — sin experiencia técnica — contrate como un experto.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step-card reveal" data-delay="0">
+        <div class="step-num">01</div>
+        <div class="step-visual">
+          <div class="mini-form">
+            <div class="f-line w60"></div>
+            <div class="f-line w85"></div>
+            <div class="f-line"></div>
+            <div class="f-btn"></div>
+          </div>
+        </div>
+        <h3>Publica tu proyecto</h3>
+        <p>Describe qué necesitas, tu presupuesto y la fecha. Es gratis y toma menos de 2 minutos.</p>
+      </div>
+
+      <div class="step-card reveal" data-delay="130">
+        <div class="step-num">02</div>
+        <div class="step-visual">
+          <div class="mini-stack">
+            <div class="pcard">
+              <div class="av" style="background:var(--green)">AC</div>
+              <div class="ln"><div class="l1"></div><div class="l2"></div></div>
+              <div class="pr">$120</div>
+            </div>
+            <div class="pcard">
+              <div class="av" style="background:var(--amber)">VT</div>
+              <div class="ln"><div class="l1"></div><div class="l2"></div></div>
+              <div class="pr">$135</div>
+            </div>
+            <div class="pcard">
+              <div class="av" style="background:#5B7FFF">SW</div>
+              <div class="ln"><div class="l1"></div><div class="l2"></div></div>
+              <div class="pr">$110</div>
+            </div>
+          </div>
+        </div>
+        <h3>Compara propuestas</h3>
+        <p>Recibe cotizaciones de profesionales verificados. Revisa perfiles, portafolios y calificaciones reales.</p>
+      </div>
+
+      <div class="step-card reveal" data-delay="260">
+        <div class="step-num">03</div>
+        <div class="step-visual">
+          <div class="mini-pay">
+            <div class="lock">🔒</div>
+            <div class="p1">Pago protegido</div>
+            <div class="p2">$120,00</div>
+            <div class="check">✓</div>
+          </div>
+        </div>
+        <h3>Contrata y paga seguro</h3>
+        <p>Tu pago queda en custodia y se libera solo cuando confirmas la entrega. Sin riesgos, sin sorpresas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SHOWCASE ================= -->
+<section class="section" style="padding-top:30px">
+  <div class="container">
+    <div class="showcase reveal-scale">
+      <h2>Servicios, <em>simplificados</em><br>para tu día a día</h2>
+      <p>Desde reparar una tubería hasta construir tu próxima startup. Una interfaz pensada para generar confianza y resultados.</p>
+      <div class="showcase-phones">
+        <div class="sc-phone left" data-parallax="0.06">
+          <div class="scr">
+            <div class="sc-mini-head">
+              <div class="t">Buscar profesionales</div>
+              <div class="s">42 disponibles cerca de ti</div>
+            </div>
+            <div class="sc-pad">
+              <div class="sc-row"><div class="ic" style="background:var(--mint)">👷</div><div><div class="l1">Carlos Mena</div><div class="l2">Maestro electricista</div></div><div class="star">★ 5.0</div></div>
+              <div class="sc-row"><div class="ic" style="background:var(--amber-bg)">🎨</div><div><div class="l1">Paula Ríos</div><div class="l2">Diseñadora UX</div></div><div class="star">★ 4.9</div></div>
+              <div class="sc-row"><div class="ic" style="background:#E5EDFF">📐</div><div><div class="l1">Est. Vértice</div><div class="l2">Arquitectura</div></div><div class="star">★ 4.8</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-phone center" data-parallax="-0.05">
+          <div class="scr">
+            <div class="sc-mini-head">
+              <div class="t">Proyecto: Tienda en línea</div>
+              <div class="s">Etapa 2 de 3 · En progreso</div>
+            </div>
+            <div class="sc-pad">
+              <div class="sc-amber-card">
+                <div class="a1">En custodia</div>
+                <div class="a2">$650,00</div>
+              </div>
+              <div class="sc-row"><div class="ic" style="background:var(--mint)">✓</div><div><div class="l1">Diseño aprobado</div><div class="l2">Pago liberado — $200</div></div></div>
+              <div class="sc-row"><div class="ic" style="background:var(--amber-bg)">⏳</div><div><div class="l1">Desarrollo</div><div class="l2">Entrega: 12 de junio</div></div></div>
+              <div class="sc-row"><div class="ic" style="background:#F3F0FF">💬</div><div><div class="l1">Chat con Soluciones Web</div><div class="l2">“Avance listo para revisión”</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-phone right" data-parallax="0.08">
+          <div class="scr">
+            <div class="sc-mini-head">
+              <div class="t">Tu reputación</div>
+              <div class="s">Perfil profesional</div>
+            </div>
+            <div class="sc-pad">
+              <div class="sc-row"><div class="ic" style="background:var(--mint)">⭐</div><div><div class="l1">4.9 promedio</div><div class="l2">86 valoraciones</div></div></div>
+              <div class="sc-row"><div class="ic" style="background:var(--amber-bg)">🏆</div><div><div class="l1">Top profesional</div><div class="l2">Insignia verificada</div></div></div>
+              <div class="sc-amber-card">
+                <div class="a1">Ganado este mes</div>
+                <div class="a2">$1.870,00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONFIANZA ================= -->
+<section class="section" id="seguridad">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Seguridad</div>
+      <h2>Protegido <span class="serif-accent">en cada paso</span></h2>
+      <p>Construimos confianza con tecnología: verificación, custodia de pagos y transparencia total.</p>
+    </div>
+
+    <div class="trust-grid">
+      <div class="trust-card reveal" data-delay="0">
+        <div class="trust-ic" style="background:var(--mint)">🪪</div>
+        <h3>Identidad verificada</h3>
+        <p>Cada profesional pasa por verificación de identidad y validación de credenciales antes de ofrecer servicios.</p>
+      </div>
+      <div class="trust-card reveal" data-delay="90">
+        <div class="trust-ic" style="background:var(--amber-bg)">🔐</div>
+        <h3>Pagos en custodia</h3>
+        <p>El dinero se retiene de forma segura y se libera únicamente cuando el cliente confirma la entrega del trabajo.</p>
+      </div>
+      <div class="trust-card reveal" data-delay="180">
+        <div class="trust-ic" style="background:#E5EDFF">🛰️</div>
+        <h3>Monitoreo antifraude</h3>
+        <p>Detección proactiva de actividad sospechosa para mantener la plataforma limpia y confiable.</p>
+      </div>
+      <div class="trust-card reveal" data-delay="0">
+        <div class="trust-ic" style="background:#FFE9EC">⭐</div>
+        <h3>Reputación transparente</h3>
+        <p>Solo quienes contrataron pueden calificar. Las valoraciones son reales, públicas y no se pueden editar.</p>
+      </div>
+      <div class="trust-card reveal" data-delay="90">
+        <div class="trust-ic" style="background:#EDF9F0">🤝</div>
+        <h3>Resolución de disputas</h3>
+        <p>Si algo no sale como esperabas, nuestro equipo media entre las partes y protege tu dinero mientras tanto.</p>
+      </div>
+      <div class="trust-card reveal" data-delay="180">
+        <div class="trust-ic" style="background:var(--paper-2)">🇪🇨</div>
+        <h3>Hecho para Ecuador</h3>
+        <p>Pagos locales en dólares, soporte en español y profesionales de tu ciudad. Sin fricciones internacionales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CATEGORÍAS ================= -->
+<section class="section" style="padding-top:30px">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Categorías</div>
+      <h2>Un profesional <span class="serif-accent">para cada necesidad</span></h2>
+      <p>Más de 40 categorías de servicios, desde oficios del hogar hasta consultoría especializada.</p>
+    </div>
+
+    <div class="cats">
+      <div class="cat-card reveal" data-delay="0"><div class="em">📐</div><div class="nm">Arquitectura</div><div class="cat-n">320 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="60"><div class="em">💻</div><div class="nm">Desarrollo web</div><div class="cat-n">540 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="120"><div class="em">🎨</div><div class="nm">Diseño gráfico</div><div class="cat-n">610 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="180"><div class="em">⚖️</div><div class="nm">Legal</div><div class="cat-n">280 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="0"><div class="em">🧾</div><div class="nm">Contabilidad</div><div class="cat-n">350 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="60"><div class="em">📸</div><div class="nm">Fotografía</div><div class="cat-n">410 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="120"><div class="em">⚡</div><div class="nm">Electricidad</div><div class="cat-n">490 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="180"><div class="em">🔧</div><div class="nm">Plomería</div><div class="cat-n">430 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="0"><div class="em">📣</div><div class="nm">Marketing digital</div><div class="cat-n">380 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="60"><div class="em">🏗️</div><div class="nm">Construcción</div><div class="cat-n">290 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="120"><div class="em">🧠</div><div class="nm">Consultoría</div><div class="cat-n">240 profesionales</div></div>
+      <div class="cat-card reveal" data-delay="180"><div class="em">✨</div><div class="nm">Ver todas →</div><div class="cat-n">+40 categorías</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRECIOS ================= -->
+<section class="section" id="precios">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Precios</div>
+      <h2>Simple y <span class="serif-accent">sin sorpresas</span></h2>
+      <p>Sin mensualidades ni costos ocultos. Solo pagas cuando el trabajo se completa.</p>
+    </div>
+
+    <div class="pricing-wrap reveal">
+      <div class="pricing-tag">💚 Lo más justo del mercado</div>
+      <div class="pricing">
+        <div class="price-card">
+          <div class="tier">Clientes</div>
+          <div class="amount">$0<span> / siempre</span></div>
+          <p class="blurb">Para quienes buscan contratar servicios con tranquilidad.</p>
+          <ul>
+            <li>Publica proyectos ilimitados</li>
+            <li>Recibe propuestas sin costo</li>
+            <li>Chat directo con profesionales</li>
+            <li>Pago protegido en custodia</li>
+            <li>Soporte 24/7</li>
+          </ul>
+          <a href="#cta" class="btn btn-ghost">Crear cuenta gratis</a>
+        </div>
+
+        <div class="price-card featured">
+          <div class="tier">★ Profesionales</div>
+          <div class="amount">15%<span> / por trabajo</span></div>
+          <p class="blurb">Solo pagas comisión cuando completas un trabajo y cobras. Nada más.</p>
+          <ul>
+            <li>Perfil profesional verificado</li>
+            <li>Portafolio y reputación pública</li>
+            <li>Propuestas a proyectos ilimitadas</li>
+            <li>Cobros seguros y puntuales</li>
+            <li>Sin cuota mensual, sin riesgo</li>
+          </ul>
+          <a href="#cta" class="btn btn-amber">Empezar a ganar</a>
+        </div>
+
+        <div class="price-card">
+          <div class="tier">Empresas</div>
+          <div class="amount">A medida</div>
+          <p class="blurb">Para negocios que contratan talento de forma recurrente.</p>
+          <ul>
+            <li>Gestión de múltiples proyectos</li>
+            <li>Facturación centralizada</li>
+            <li>Profesionales preseleccionados</li>
+            <li>Ejecutivo de cuenta dedicado</li>
+          </ul>
+          <a href="#cta" class="btn btn-ghost">Hablemos</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIOS ================= -->
+<section class="section" style="padding-top:30px">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Testimonios</div>
+      <h2>Miles de ecuatorianos <span class="serif-accent">ya confían</span></h2>
+      <p>Historias reales de clientes y profesionales que crecen con TaskYa.</p>
+    </div>
+
+    <div class="testis">
+      <div class="testi reveal" data-delay="0">
+        <div class="stars">★★★★★</div>
+        <p class="quote">“Necesitaba un electricista urgente y en <strong>menos de una hora</strong> tenía 4 propuestas con precios claros. El pago protegido me dio total tranquilidad.”</p>
+        <div class="who">
+          <div class="av" style="background:var(--green)">DC</div>
+          <div><div class="wn">Daniela Cruz</div><div class="wr">Cliente · Quito</div></div>
+        </div>
+      </div>
+      <div class="testi dark-t reveal" data-delay="110">
+        <div class="stars">★★★★★</div>
+        <p class="quote">“Como diseñador independiente, TaskYa cambió mi negocio. Pasé de buscar clientes por WhatsApp a tener <strong>una agenda llena</strong> y cobros seguros.”</p>
+        <div class="who">
+          <div class="av" style="background:var(--amber);color:var(--ink)">AM</div>
+          <div><div class="wn">Andrés Mejía</div><div class="wr">Diseñador gráfico · Guayaquil</div></div>
+        </div>
+      </div>
+      <div class="testi reveal" data-delay="220">
+        <div class="stars">★★★★★</div>
+        <p class="quote">“Contratamos un contador y un desarrollador para nuestra startup. Comparar perfiles y valoraciones <strong>nos ahorró semanas</strong> de búsqueda.”</p>
+        <div class="who">
+          <div class="av" style="background:#5B7FFF">SV</div>
+          <div><div class="wn">Sofía Vélez</div><div class="wr">Fundadora · Cuenca</div></div>
+        </div>
+      </div>
+      <div class="testi reveal" data-delay="0">
+        <div class="stars">★★★★★</div>
+        <p class="quote">“La remodelación de mi casa fue impecable. Pude ver el portafolio del maestro, sus valoraciones y <strong>pagar por etapas</strong>. Así da gusto.”</p>
+        <div class="who">
+          <div class="av" style="background:#C2553B">JP</div>
+          <div><div class="wn">Jorge Paredes</div><div class="wr">Cliente · Ambato</div></div>
+        </div>
+      </div>
+      <div class="testi reveal" data-delay="110">
+        <div class="stars">★★★★★</div>
+        <p class="quote">“Soy abogada y los clientes me encuentran por mi reputación en la plataforma. <strong>El 15% de comisión se paga solo</strong> con el volumen que genero.”</p>
+        <div class="who">
+          <div class="av" style="background:var(--green-deep)">VR</div>
+          <div><div class="wn">Valeria Romero</div><div class="wr">Abogada · Quito</div></div>
+        </div>
+      </div>
+      <div class="testi dark-t reveal" data-delay="220">
+        <div class="stars">★★★★★</div>
+        <p class="quote">“Publiqué la sesión de fotos de mi marca un lunes y <strong>el viernes ya tenía el material</strong>. Rápido, profesional y sin sustos con el pago.”</p>
+        <div class="who">
+          <div class="av" style="background:var(--amber);color:var(--ink)">KL</div>
+          <div><div class="wn">Karla León</div><div class="wr">Emprendedora · Manta</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section" id="faq" style="padding-top:30px">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Preguntas frecuentes</div>
+      <h2>¿Tienes <span class="serif-accent">dudas?</span></h2>
+      <p>Todo lo que necesitas saber antes de empezar.</p>
+    </div>
+
+    <div class="faq-wrap reveal">
+      <div class="faq-item open">
+        <button class="faq-q">
+          <span class="qic">🔒</span>
+          ¿Cómo funciona el pago protegido?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Cuando contratas, tu pago queda en custodia segura de TaskYa. El profesional solo lo recibe cuando confirmas que el trabajo fue entregado correctamente. Si algo sale mal, nuestro equipo de disputas interviene y tu dinero permanece protegido durante todo el proceso.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="qic">💵</span>
+          ¿Cuánto cuesta usar TaskYa?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Para clientes es completamente gratis: publicar proyectos, recibir propuestas y chatear no tiene costo. Los profesionales pagan una comisión del 15% únicamente sobre trabajos completados y cobrados. No hay mensualidades ni cargos ocultos.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="qic">🪪</span>
+          ¿Cómo se verifica a los profesionales?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Cada profesional pasa por verificación de identidad con documento oficial, validación de datos de contacto y revisión de credenciales profesionales cuando aplica. Además, su reputación se construye con valoraciones reales de clientes que efectivamente lo contrataron.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="qic">⏱️</span>
+          ¿Cuándo recibe el pago el profesional?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Apenas el cliente confirma la entrega del trabajo, el pago se libera automáticamente descontando la comisión del 15%. Por ejemplo: en un servicio de $100, el profesional recibe $85 directamente en su cuenta bancaria local.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="qic">🤝</span>
+          ¿Qué pasa si tengo un problema con un servicio?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Puedes abrir una disputa desde la plataforma. Mientras se resuelve, el pago permanece en custodia. Nuestro equipo revisa la evidencia de ambas partes (chat, entregas, acuerdos) y media para llegar a una solución justa, incluyendo reembolsos cuando corresponde.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA FINAL ================= -->
+<section class="section" id="cta" style="padding-top:20px">
+  <div class="container">
+    <div class="cta-final reveal-scale">
+      <div>
+        <h2>Empieza a contratar con claridad y confianza</h2>
+        <p>Únete a la comunidad de clientes y profesionales que está transformando la forma de trabajar en Ecuador.</p>
+        <div class="actions">
+          <a href="#" class="btn btn-amber">Publicar un proyecto</a>
+          <a href="#" class="btn btn-white">Registrarme como profesional</a>
+        </div>
+      </div>
+      <div class="cta-mini-phone">
+        <div class="scr">
+          <div class="sc-mini-head">
+            <div class="t">¡Bienvenido a TaskYa!</div>
+            <div class="s">Tu primer proyecto te espera</div>
+          </div>
+          <div class="sc-pad">
+            <div class="sc-amber-card">
+              <div class="a1">Propuestas nuevas</div>
+              <div class="a2">12</div>
+            </div>
+            <div class="sc-row"><div class="ic" style="background:var(--mint)">🎉</div><div><div class="l1">Cuenta creada</div><div class="l2">Perfil al 90%</div></div></div>
+            <div class="sc-row"><div class="ic" style="background:var(--amber-bg)">🚀</div><div><div class="l1">Publica tu proyecto</div><div class="l2">Gratis · 2 minutos</div></div></div>
+            <div class="sc-row"><div class="ic" style="background:#E5EDFF">💬</div><div><div class="l1">Chat seguro</div><div class="l2">Dentro de la plataforma</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">
+          <span class="mark">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 6.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Task<em>Ya</em>
+        </a>
+        <p>El marketplace de servicios profesionales del Ecuador. Conectamos talento con oportunidades, con pagos protegidos y confianza total.</p>
+        <div class="social">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="TikTok">TT</a>
+          <a href="#" aria-label="LinkedIn">IN</a>
+          <a href="#" aria-label="X">𝕏</a>
+        </div>
+      </div>
+      <div>
+        <h4>Plataforma</h4>
+        <ul>
+          <li><a href="#como-funciona">Cómo funciona</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#seguridad">Seguridad</a></li>
+          <li><a href="#precios">Precios</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Compañía</h4>
+        <ul>
+          <li><a href="#">Sobre nosotros</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+          <li><a href="#">Prensa</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:hola@taskya.ec">hola@taskya.ec</a></li>
+          <li><a href="#">+593 99 000 0000</a></li>
+          <li><a href="#">Quito, Ecuador 🇪🇨</a></li>
+          <li><a href="#">Centro de ayuda</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>© 2026 TaskYa · Un producto de Initec Studio</span>
+      <span style="display:flex;gap:18px">
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Cookies</a>
+      </span>
+    </div>
+  </div>
+  <div class="giant-word" id="giantWord" aria-hidden="true">
+    <span>T</span><span>A</span><span>S</span><span>K</span><span>Y</span><span>A</span>
+  </div>
+</footer>
+
+<script>
+/* ============ Nav: estado al hacer scroll ============ */
+const nav=document.getElementById('nav');
+const onScrollNav=()=>nav.classList.toggle('scrolled',window.scrollY>30);
+window.addEventListener('scroll',onScrollNav,{passive:true});
+onScrollNav();
+
+/* ============ Hero: animación de entrada ============ */
+window.addEventListener('load',()=>{
+  requestAnimationFrame(()=>document.getElementById('hero').classList.add('loaded'));
+});
+
+/* ============ Reveal on scroll (IntersectionObserver) ============ */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const d=parseInt(e.target.dataset.delay||'0',10);
+      setTimeout(()=>e.target.classList.add('in'),d);
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-scale,.reveal-left,.reveal-right').forEach(el=>io.observe(el));
+
+/* ============ Contadores animados ============ */
+const counterIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,target=+el.dataset.target,dur=1600,t0=performance.now();
+    const fmt=n=>n.toLocaleString('es-EC');
+    const tick=now=>{
+      const p=Math.min((now-t0)/dur,1);
+      el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,4))));
+      if(p<1)requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    counterIO.unobserve(el);
+  });
+},{threshold:.6});
+document.querySelectorAll('.counter').forEach(el=>counterIO.observe(el));
+
+/* ============ Marquee: duplicar contenido para loop infinito ============ */
+const mq=document.getElementById('marquee');
+mq.innerHTML+=mq.innerHTML;
+
+/* ============ Parallax sutil (hero phone + showcase) ============ */
+const phone=document.getElementById('heroPhone');
+const chips=document.querySelectorAll('.float-chip');
+const parallaxEls=document.querySelectorAll('[data-parallax]');
+let ticking=false;
+window.addEventListener('scroll',()=>{
+  if(ticking)return;
+  ticking=true;
+  requestAnimationFrame(()=>{
+    const y=window.scrollY;
+    if(y<900){
+      phone.style.transform=`translate(-50%,-50%) rotate(-3deg) translateY(${y*0.05}px)`;
+      chips.forEach((c,i)=>c.style.transform=`translateY(${y*(0.09+i*0.03)}px)`);
+    }
+    parallaxEls.forEach(el=>{
+      const r=el.closest('.showcase').getBoundingClientRect();
+      const prog=(window.innerHeight-r.top)/(window.innerHeight+r.height);
+      if(prog>0&&prog<1){
+        const f=parseFloat(el.dataset.parallax);
+        el.style.translate=`0 ${(prog-.5)*100*f*-10}px`;
+      }
+    });
+    ticking=false;
+  });
+},{passive:true});
+
+/* ============ FAQ acordeón ============ */
+document.querySelectorAll('.faq-item').forEach(item=>{
+  const q=item.querySelector('.faq-q'),a=item.querySelector('.faq-a');
+  const setH=()=>{a.style.maxHeight=item.classList.contains('open')?a.scrollHeight+'px':'0'};
+  setH();
+  q.addEventListener('click',()=>{
+    document.querySelectorAll('.faq-item.open').forEach(o=>{
+      if(o!==item){o.classList.remove('open');o.querySelector('.faq-a').style.maxHeight='0'}
+    });
+    item.classList.toggle('open');
+    setH();
+  });
+});
+
+/* ============ Footer: wordmark gigante letra por letra ============ */
+const gw=document.getElementById('giantWord');
+const gwIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      gw.classList.add('in');
+      gw.querySelectorAll('span').forEach((s,i)=>s.style.transitionDelay=`${i*70}ms`);
+      gwIO.unobserve(gw);
+    }
+  });
+},{threshold:.3});
+gwIO.observe(gw);
+</script>
+</body>
+</html>
