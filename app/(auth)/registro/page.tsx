@@ -1,14 +1,42 @@
 import Link from "next/link";
-import { AlertCircle, Search, Briefcase } from "lucide-react";
+import { AlertCircle, Search, Briefcase, MailCheck } from "lucide-react";
 import { signUp } from "../actions";
 
 export default async function RegistroPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; tipo?: string }>;
+  searchParams: Promise<{ error?: string; tipo?: string; check?: string }>;
 }) {
-  const { error, tipo } = await searchParams;
+  const { error, tipo, check } = await searchParams;
   const defaultPro = tipo === "profesional";
+
+  // Pantalla post-registro: hay que confirmar el correo
+  if (check) {
+    return (
+      <div className="text-center">
+        <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-mint">
+          <MailCheck className="h-8 w-8 text-green" />
+        </div>
+        <h1 className="mt-5 font-display text-3xl font-bold text-ink">
+          Revisa tu correo
+        </h1>
+        <p className="mt-3 text-ink-mute">
+          Te enviamos un enlace de confirmación a{" "}
+          <strong className="text-ink">{check}</strong>. Ábrelo para activar tu
+          cuenta y entrar a TaskYa.
+        </p>
+        <p className="mt-2 text-sm text-ink-mute">
+          ¿No lo ves? Revisa la carpeta de spam.
+        </p>
+        <Link
+          href="/login"
+          className="mt-7 inline-block rounded-full bg-ink px-6 py-3 font-semibold text-white transition hover:bg-green-deep"
+        >
+          Ir a iniciar sesión
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div>

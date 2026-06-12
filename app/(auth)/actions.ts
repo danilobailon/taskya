@@ -10,7 +10,7 @@ export async function signUp(formData: FormData) {
   const full_name = String(formData.get("full_name") || "");
   const role = String(formData.get("role") || "cliente");
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: { data: { full_name, role } },
@@ -18,6 +18,11 @@ export async function signUp(formData: FormData) {
 
   if (error) {
     redirect(`/registro?error=${encodeURIComponent(error.message)}`);
+  }
+  // Si la confirmación por correo está activada, no hay sesión todavía:
+  // mostramos la pantalla de "revisa tu correo".
+  if (!data.session) {
+    redirect(`/registro?check=${encodeURIComponent(email)}`);
   }
   redirect("/panel");
 }
