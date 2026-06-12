@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>TaskYa — Estrategia de validación</title>
+<style>
+@page{size:A4;margin:18mm 16mm}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#0E5A43;--green-deep:#093A2C;--green-dark:#062A20;
+  --amber:#FF8A1E;--amber-bg:#FFF1E0;--mint:#DBF0E2;
+  --ink:#0F1D17;--ink-soft:#3D4A44;--ink-mute:#6E7A74;
+  --paper:#FBF9F4;--line:#E4E0D5;
+}
+body{
+  font-family:"Segoe UI",-apple-system,Arial,sans-serif;
+  color:var(--ink);line-height:1.62;font-size:11pt;
+  background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+h1,h2,h3{line-height:1.2;letter-spacing:-.01em}
+p{margin:0 0 9pt}
+strong{color:var(--ink);font-weight:700}
+em{color:var(--green);font-style:normal;font-weight:600}
+
+/* ---------- PORTADA / HEADER ---------- */
+.cover{
+  background:linear-gradient(160deg,var(--green) 0%,var(--green-dark) 100%);
+  color:#fff;border-radius:16px;padding:34px 32px;margin-bottom:24px;
+  position:relative;overflow:hidden;
+}
+.cover::after{
+  content:"";position:absolute;right:-60px;bottom:-80px;width:260px;height:260px;
+  border-radius:50%;background:radial-gradient(circle,rgba(255,138,30,.35),transparent 70%);
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:20pt;font-weight:800;margin-bottom:20px}
+.brand .mark{
+  width:34px;height:34px;border-radius:10px;background:#fff;color:var(--green);
+  display:grid;place-items:center;font-weight:900;font-size:18pt;
+}
+.brand em{color:var(--amber);font-weight:800}
+.cover .kicker{
+  display:inline-block;font-size:8.5pt;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--amber);background:rgba(255,255,255,.08);
+  padding:5px 12px;border-radius:30px;margin-bottom:14px;
+}
+.cover h1{font-size:26pt;font-weight:800;margin-bottom:10px;max-width:90%}
+.cover .lead{font-size:11.5pt;color:rgba(255,255,255,.82);max-width:88%}
+.cover .meta{
+  margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.18);
+  display:flex;gap:30px;font-size:9pt;color:rgba(255,255,255,.7);
+}
+.cover .meta b{color:#fff;display:block;font-size:9.5pt;font-weight:700}
+
+/* ---------- SECCIONES ---------- */
+.sec{margin:22px 0 18px}
+.sec-num{
+  display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;
+  background:var(--mint);color:var(--green-deep);font-weight:800;font-size:10pt;
+  margin-right:9px;vertical-align:middle;
+}
+h2{font-size:15pt;font-weight:800;color:var(--ink);display:flex;align-items:center;margin-bottom:10px}
+h2 .sec-num{flex-shrink:0}
+.sec > p,.sec > ul{padding-left:33px}
+h3{font-size:11.5pt;font-weight:700;color:var(--green);margin:12px 0 5px}
+
+ul{list-style:none;margin:0 0 9pt}
+li{position:relative;padding-left:18px;margin-bottom:5px}
+li::before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;background:var(--amber)}
+
+/* ---------- CALLOUTS ---------- */
+.callout{
+  border-radius:12px;padding:15px 18px;margin:12px 0 12px 33px;font-size:10.5pt;
+}
+.callout.warn{background:var(--amber-bg);border-left:4px solid var(--amber)}
+.callout.ok{background:var(--mint);border-left:4px solid var(--green)}
+.callout .ctitle{font-weight:800;margin-bottom:3px;display:flex;align-items:center;gap:7px}
+.quote{
+  margin:10px 0 12px 33px;padding:12px 18px;background:var(--paper);
+  border-left:4px solid var(--green);border-radius:8px;font-style:italic;color:var(--ink-soft);
+}
+
+/* ---------- TABLA ---------- */
+.tbl-wrap{margin:10px 0 14px 33px}
+table{width:100%;border-collapse:collapse;font-size:9.5pt;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;text-align:left;padding:9px 12px;font-weight:700;font-size:9pt}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even){background:var(--paper)}
+.step-n{font-weight:800;color:var(--green);white-space:nowrap}
+
+/* ---------- FASES ---------- */
+.phase{
+  border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:10px 0 10px 33px;
+  background:#fff;
+}
+.phase.p0{border-color:var(--green);background:linear-gradient(180deg,#fff,var(--mint))}
+.phase .ph-tag{
+  display:inline-block;font-size:8pt;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 10px;border-radius:20px;margin-bottom:7px;
+}
+.phase.p0 .ph-tag{background:var(--green);color:#fff}
+.phase.p1 .ph-tag{background:var(--amber-bg);color:#9a4a00}
+.phase h3{margin:0 0 4px;color:var(--ink)}
+.phase .cost{font-weight:800;color:var(--green)}
+
+/* ---------- FLUJO ---------- */
+.flow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:8px 0 6px 33px}
+.flow .node{
+  background:var(--paper);border:1px solid var(--line);border-radius:30px;
+  padding:6px 13px;font-size:9pt;font-weight:600;
+}
+.flow .arr{color:var(--amber);font-weight:800}
+
+/* ---------- FOOTER ---------- */
+.foot{
+  margin-top:26px;padding-top:14px;border-top:2px solid var(--green);
+  display:flex;justify-content:space-between;align-items:center;font-size:8.5pt;color:var(--ink-mute);
+}
+.foot b{color:var(--green)}
+.avoid-break{break-inside:avoid}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="brand"><span class="mark">T</span>Task<em>Ya</em></div>
+  <span class="kicker">Estrategia de lanzamiento</span>
+  <h1>Cómo validar la demanda antes de construir la plataforma</h1>
+  <p class="lead">Una ruta de bajo costo para confirmar que existe mercado real para TaskYa — antes de invertir meses en desarrollo.</p>
+  <div class="meta">
+    <div><b>Proyecto</b>Marketplace de servicios · Ecuador</div>
+    <div><b>Preparado por</b>Initec Studio</div>
+    <div><b>Documento</b>Recomendación estratégica</div>
+  </div>
+</div>
+
+<div class="sec avoid-break">
+  <h2><span class="sec-num">1</span> El plan de MVP está bien — con una salvedad</h2>
+  <p>El cambio de modelo de “publicar solicitudes” hacia un <strong>catálogo de servicios tipo Fiverr</strong> es la decisión correcta: reduce la complejidad, evita las cotizaciones múltiples y acelera el lanzamiento. Enfocar el arranque en <strong>una sola categoría —arquitectura y construcción en Manabí—</strong> es lo más acertado del plan. El stack tecnológico propuesto (Next.js + Supabase + PayPhone/Kushki) también es el adecuado para el mercado ecuatoriano.</p>
+  <p>La salvedad está en el enfoque: tal como está, el MVP no valida la <em>demanda</em>, sino la <em>capacidad de ejecución</em>.</p>
+</div>
+
+<div class="sec avoid-break">
+  <h2><span class="sec-num">2</span> El MVP descrito valida ejecución, no demanda</h2>
+  <p>El documento propone construir un marketplace completo: registro, perfiles, catálogo, buscador con filtros, chat, pagos integrados, dashboards de cliente y profesional, panel administrativo y seis tablas de base de datos. Eso representa <strong>semanas o meses de desarrollo</strong>.</p>
+  <p>Si se construye y nadie lo usa, no sabremos cuál fue la causa real:</p>
+  <ul>
+    <li>No existe demanda real, o</li>
+    <li>La plataforma tenía demasiada fricción, o</li>
+    <li>No había suficientes profesionales listados para atraer clientes.</li>
+  </ul>
+  <div class="callout warn">
+    <div class="ctitle">⚠ El riesgo</div>
+    Invertir meses de desarrollo para aprender algo que puede comprobarse en 2 o 3 semanas.
+  </div>
+</div>
+
+<div class="sec avoid-break">
+  <h2><span class="sec-num">3</span> El problema que detiene a la mayoría de marketplaces</h2>
+  <p>Se conoce como el problema del <strong>“arranque en frío”</strong> (huevo y gallina):</p>
+  <div class="quote">Los clientes no llegan si no hay profesionales. Los profesionales no se registran si no hay clientes.</div>
+  <p>El plan actual construye toda la tecnología asumiendo que este problema ya está resuelto — y todavía no lo está. <strong>Ese es el verdadero riesgo del negocio, no el código.</strong></p>
+</div>
+
+<div class="sec avoid-break">
+  <h2><span class="sec-num">4</span> La forma más fácil de probar la demanda</h2>
+  <p>Se llama <strong>“Concierge MVP”</strong> o marketplace manual: durante las primeras semanas, el equipo <em>es</em> la plataforma, operada a mano, antes de automatizar nada.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:18%">Paso</th><th style="width:52%">Qué se hace</th><th style="width:30%">Herramienta</th></tr></thead>
+      <tbody>
+        <tr><td class="step-n">1 · Oferta primero</td><td>Conseguir que <strong>20 a 30 arquitectos de Manabí</strong> acepten estar en una lista. Si no se logra ni esto, no hay negocio que construir.</td><td>WhatsApp / llamadas</td></tr>
+        <tr><td class="step-n">2 · Demanda</td><td>Agregar a la landing —ya publicada— un formulario simple: “¿Qué servicio buscas?” conectado a WhatsApp.</td><td>Landing actual</td></tr>
+        <tr><td class="step-n">3 · Tráfico</td><td>Invertir $50–$100 en anuncios: <em>“Encuentra arquitecto en Manabí”</em> dirigidos a la landing.</td><td>Meta Ads (IG/FB)</td></tr>
+        <tr><td class="step-n">4 · Match manual</td><td>Cuando alguien solicita un servicio, se le conecta a mano con un profesional de la lista.</td><td>WhatsApp</td></tr>
+        <tr><td class="step-n">5 · Cobro real</td><td>Cobrar manualmente la comisión del 15% en las primeras transacciones reales.</td><td>Transferencia / PayPhone</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout ok">
+    <div class="ctitle">✓ La señal que buscamos</div>
+    Si en 2 o 3 semanas se logran <strong>entre 5 y 10 contrataciones reales</strong> operando a mano, queda demostrada la demanda. Recién ahí vale la pena construir el MVP completo — y se construye sabiendo exactamente qué necesitan los usuarios reales.
+  </div>
+</div>
+
+<div class="sec avoid-break">
+  <h2><span class="sec-num">5</span> Ruta recomendada en dos fases</h2>
+
+  <div class="phase p0">
+    <span class="ph-tag">Fase 0 · Esta semana</span>
+    <h3>Validación manual — <span class="cost">costo ≈ $0</span></h3>
+    <p style="padding-left:0;margin-bottom:6px">Convertir la landing actual en una máquina de captura de interés:</p>
+    <ul style="padding-left:0">
+      <li>Formulario “Buscar servicio” → llega al correo / WhatsApp del equipo.</li>
+      <li>Formulario “Soy profesional, quiero unirme” → con esto se arma la oferta.</li>
+      <li>Contador de lista de espera para medir el interés real.</li>
+    </ul>
+  </div>
+
+  <div class="phase p1">
+    <span class="ph-tag">Fase 1 · Solo si la Fase 0 funciona</span>
+    <h3>Construcción del MVP completo</h3>
+    <p style="padding-left:0">Desarrollo de la plataforma con Next.js + Supabase, autenticación, pagos integrados, dashboards y panel administrativo — tal como lo describe el documento de MVP, que sirve como plano perfecto para esta fase.</p>
+  </div>
+</div>
+
+<div class="sec avoid-break">
+  <h2><span class="sec-num">6</span> En resumen</h2>
+  <div class="flow">
+    <span class="node">Conseguir oferta</span><span class="arr">→</span>
+    <span class="node">Captar demanda en la landing</span><span class="arr">→</span>
+    <span class="node">Conectar a mano</span><span class="arr">→</span>
+    <span class="node">Cobrar 15%</span><span class="arr">→</span>
+    <span class="node">¿Funciona? Construir</span>
+  </div>
+  <p>Esto no descarta el documento de MVP: es su plano de ejecución para la Fase 1. Solo añade una prueba barata y rápida <strong>antes</strong> de invertir en construir, para que cada dólar y cada semana de desarrollo se gasten sobre una demanda ya comprobada.</p>
+</div>
+
+<div class="foot">
+  <span>Documento preparado por <b>Initec Studio</b> · Proyecto TaskYa</span>
+  <span>Recomendación estratégica — 2026</span>
+</div>
+
+</body>
+</html>

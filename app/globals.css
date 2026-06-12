@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* ============================================================
+   TASKYA — Sistema de diseño
+   Papel cálido + verde selva + ámbar "¡ya!"
+   ============================================================ */
+:root {
+  --paper: #FBF9F4;
+  --paper-2: #F4F0E6;
+  --ink: #0F1D17;
+  --ink-soft: #3D4A44;
+  --ink-mute: #6E7A74;
+  --green: #0E5A43;
+  --green-deep: #093A2C;
+  --green-dark: #062A20;
+  --mint: #DBF0E2;
+  --mint-2: #C2E5CF;
+  --amber: #FF8A1E;
+  --amber-soft: #FFB76B;
+  --amber-bg: #FFF1E0;
+  --line: rgba(15, 29, 23, 0.10);
+  --line-strong: rgba(15, 29, 23, 0.16);
+  --card: #FFFFFF;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-green: var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-green-dark: var(--green-dark);
+  --color-mint: var(--mint);
+  --color-mint-2: var(--mint-2);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-amber-bg: var(--amber-bg);
+  --color-card: var(--card);
+
+  --font-display: var(--font-bricolage), sans-serif;
+  --font-sans: var(--font-instrument), sans-serif;
+
+  --radius-card: 22px;
+  --radius-lg: 30px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.45, 0.5, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
