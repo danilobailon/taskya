@@ -7,19 +7,20 @@
 :root {
   --paper: #FBF9F4;
   --paper-2: #F4F0E6;
-  --ink: #0F1D17;
-  --ink-soft: #3D4A44;
-  --ink-mute: #6E7A74;
-  --green: #0E5A43;
-  --green-deep: #093A2C;
-  --green-dark: #062A20;
-  --mint: #DBF0E2;
-  --mint-2: #C2E5CF;
+  --ink: #0F1B28;
+  --ink-soft: #3A4655;
+  --ink-mute: #6B7682;
+  /* Navy profesional (nombres "green" conservados por compatibilidad) */
+  --green: #1E3A5F;
+  --green-deep: #16293F;
+  --green-dark: #0D1B2A;
+  --mint: #DCE7F3;
+  --mint-2: #C0D3E8;
   --amber: #FF8A1E;
   --amber-soft: #FFB76B;
   --amber-bg: #FFF1E0;
-  --line: rgba(15, 29, 23, 0.10);
-  --line-strong: rgba(15, 29, 23, 0.16);
+  --line: rgba(15, 27, 40, 0.10);
+  --line-strong: rgba(15, 27, 40, 0.16);
   --card: #FFFFFF;
 }
 

@@ -71,7 +71,7 @@ export async function POST(req: Request) {
 
     const html = `
       <div style="font-family:system-ui,sans-serif;max-width:520px">
-        <h2 style="color:#0E5A43;margin:0 0 4px">Nuevo lead en TaskYa</h2>
+        <h2 style="color:#1E3A5F;margin:0 0 4px">Nuevo lead en TaskYa</h2>
         <p style="color:#6E7A74;margin:0 0 16px">${esCliente ? "Un cliente busca un servicio." : "Un profesional quiere inscribirse."}</p>
         <table style="width:100%;border-collapse:collapse">
           ${filas
