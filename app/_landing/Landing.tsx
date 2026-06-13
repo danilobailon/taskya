@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { LANDING_HTML } from "./markup";
 import "./landing.css";
 
-const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP ?? "593990000000";
-
 export default function Landing() {
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const root = ref.current;
@@ -155,122 +155,25 @@ export default function Landing() {
       cleanups.push(() => gwIO.disconnect());
     }
 
-    /* ============ MODALES DE CAPTURA ============ */
-    const modals: Record<string, HTMLElement | null> = {
-      cliente: root.querySelector("#modal-cliente"),
-      pro: root.querySelector("#modal-pro"),
+    /* ============ Botones del landing → registro ============ */
+    // Antes abrían un pop-up que llevaba a WhatsApp. Ahora que existe el
+    // registro real, llevan directo a /registro con el rol preseleccionado.
+    const go = (type: string | undefined) => {
+      const tipo = type === "pro" ? "profesional" : "cliente";
+      router.push(`/registro?tipo=${tipo}`);
     };
-    const openModal = (type: string) => {
-      const m = modals[type];
-      if (!m) return;
-      m.classList.add("open");
-      document.body.style.overflow = "hidden";
-      setTimeout(
-        () => m.querySelector<HTMLElement>("input,select")?.focus(),
-        350,
-      );
-    };
-    const closeModal = (m: Element) => {
-      m.classList.remove("open");
-      document.body.style.overflow = "";
-      setTimeout(() => m.querySelector(".modal")?.classList.remove("done"), 350);
-    };
-
-    root.querySelectorAll<HTMLElement>("[data-modal]").forEach((btn) => {
+    root.querySelectorAll<HTMLAnchorElement>("[data-modal]").forEach((btn) => {
+      btn.style.cursor = "pointer";
+      const tipo = btn.dataset.modal === "pro" ? "profesional" : "cliente";
+      btn.setAttribute("href", `/registro?tipo=${tipo}`);
       btn.addEventListener("click", (e) => {
         e.preventDefault();
-        openModal(btn.dataset.modal!);
-      });
-    });
-    root.querySelectorAll<HTMLElement>(".modal-overlay").forEach((ov) => {
-      ov.addEventListener("click", (e) => {
-        const t = e.target as HTMLElement;
-        if (t === ov || t.closest("[data-close]")) closeModal(ov);
-      });
-    });
-    root.querySelectorAll<HTMLElement>("[data-switch]").forEach((a) => {
-      a.addEventListener("click", () => {
-        const open = root.querySelector(".modal-overlay.open");
-        if (open) closeModal(open);
-        setTimeout(() => openModal(a.dataset.switch!), 360);
-      });
-    });
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        const o = root.querySelector(".modal-overlay.open");
-        if (o) closeModal(o);
-      }
-    };
-    document.addEventListener("keydown", onKey);
-    cleanups.push(() => document.removeEventListener("keydown", onKey));
-
-    const buildWa = (type: string, d: Record<string, string>) => {
-      if (type === "cliente") {
-        return (
-          `¡Hola TaskYa! 👋 Busco un servicio:%0A%0A` +
-          `*Nombre:* ${d.nombre}%0A*Ciudad:* ${d.ciudad}%0A*Categoría:* ${d.categoria}%0A` +
-          (d.detalle ? `*Detalle:* ${d.detalle}%0A` : ``) +
-          `%0AQuedo atento(a). ¡Gracias!`
-        );
-      }
-      return (
-        `¡Hola TaskYa! 🤝 Quiero ofrecer mis servicios:%0A%0A` +
-        `*Nombre:* ${d.nombre}%0A*Profesión:* ${d.profesion}%0A*Ciudad:* ${d.ciudad}%0A` +
-        (d.experiencia ? `*Experiencia:* ${d.experiencia}%0A` : ``) +
-        (d.portafolio ? `*Portafolio:* ${d.portafolio}%0A` : ``) +
-        `%0A¿Cómo me inscribo? ¡Gracias!`
-      );
-    };
-
-    root.querySelectorAll<HTMLFormElement>("form[data-form]").forEach((form) => {
-      const type = form.dataset.form!;
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        let ok = true;
-        form.querySelectorAll<HTMLInputElement>("[required]").forEach((inp) => {
-          const f = inp.closest(".field");
-          if (!inp.value.trim()) {
-            f?.classList.add("error");
-            ok = false;
-          } else f?.classList.remove("error");
-        });
-        if (!ok) return;
-
-        const data = Object.fromEntries(
-          new FormData(form).entries(),
-        ) as Record<string, string>;
-        const btn = form.querySelector<HTMLButtonElement>(
-          "button[type=submit]",
-        )!;
-        const original = btn.textContent;
-        btn.disabled = true;
-        btn.textContent = "Enviando...";
-
-        try {
-          await fetch("/api/lead", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ type, ...data }),
-          });
-        } catch {
-          /* si falla, igual seguimos a WhatsApp */
-        }
-
-        form.closest(".modal")?.classList.add("done");
-        btn.disabled = false;
-        btn.textContent = original;
-        const wa = `https://wa.me/${WHATSAPP}?text=${buildWa(type, data)}`;
-        setTimeout(() => window.open(wa, "_blank"), 650);
-      });
-      form.querySelectorAll("input,select,textarea").forEach((inp) => {
-        inp.addEventListener("input", () =>
-          inp.closest(".field")?.classList.remove("error"),
-        );
+        go(btn.dataset.modal);
       });
     });
 
     return () => cleanups.forEach((fn) => fn());
-  }, []);
+  }, [router]);
 
   return (
     <div ref={ref} dangerouslySetInnerHTML={{ __html: LANDING_HTML }} />
