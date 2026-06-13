@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { LANDING_HTML } from "./markup";
 import "./landing.css";
 
 export default function Landing() {
   const ref = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const root = ref.current;
@@ -156,24 +154,18 @@ export default function Landing() {
     }
 
     /* ============ Botones del landing → registro ============ */
-    // Antes abrían un pop-up que llevaba a WhatsApp. Ahora que existe el
-    // registro real, llevan directo a /registro con el rol preseleccionado.
-    const go = (type: string | undefined) => {
-      const tipo = type === "pro" ? "profesional" : "cliente";
-      router.push(`/registro?tipo=${tipo}`);
-    };
+    // Antes abrían un pop-up que llevaba a WhatsApp. Ahora llevan directo a
+    // /registro con el rol preseleccionado. Usamos navegación NATIVA (href,
+    // sin router.push) para que /registro cargue limpia, sin que se filtren
+    // los estilos globales del landing.
     root.querySelectorAll<HTMLAnchorElement>("[data-modal]").forEach((btn) => {
       btn.style.cursor = "pointer";
       const tipo = btn.dataset.modal === "pro" ? "profesional" : "cliente";
       btn.setAttribute("href", `/registro?tipo=${tipo}`);
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        go(btn.dataset.modal);
-      });
     });
 
     return () => cleanups.forEach((fn) => fn());
-  }, [router]);
+  }, []);
 
   return (
     <div ref={ref} dangerouslySetInnerHTML={{ __html: LANDING_HTML }} />
