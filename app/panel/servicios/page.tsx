@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Plus, Briefcase, UserCog, CheckCircle2, Pause, Play } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { formatUSD } from "@/lib/utils";
@@ -102,9 +103,12 @@ export default async function ServiciosPage({
                 </span>
                 <StatusBadge status={s.status} />
               </div>
-              <h3 className="font-display text-lg font-bold text-ink">
+              <Link
+                href={`/panel/servicio/${s.id}`}
+                className="font-display text-lg font-bold text-ink transition hover:text-green"
+              >
                 {s.title}
-              </h3>
+              </Link>
               <p className="mt-1 line-clamp-2 flex-1 text-sm text-ink-mute">
                 {s.description || "Sin descripción"}
               </p>

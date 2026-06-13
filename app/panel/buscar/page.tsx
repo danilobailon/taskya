@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Search, Star, MapPin, SearchX } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { formatUSD } from "@/lib/utils";
@@ -118,7 +119,8 @@ export default async function BuscarPage({
             const name = nameMap.get(s.professional_id)?.full_name ?? "Profesional";
             const rating = Number(pro?.rating ?? 0);
             return (
-              <Card key={s.id} className="flex flex-col">
+              <Link key={s.id} href={`/panel/servicio/${s.id}`} className="block">
+              <Card className="flex h-full flex-col transition hover:border-mint-2 hover:shadow-[var(--shadow-md)]">
                 <span className="mb-2 inline-block w-fit rounded-lg bg-mint px-2.5 py-1 text-xs font-semibold text-green-deep">
                   {s.category}
                 </span>
@@ -155,6 +157,7 @@ export default async function BuscarPage({
                   )}
                 </div>
               </Card>
+              </Link>
             );
           })}
         </div>

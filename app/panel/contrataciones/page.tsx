@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Briefcase, Search } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { formatUSD } from "@/lib/utils";
@@ -37,7 +38,8 @@ export default async function ContratacionesPage() {
       ) : (
         <div className="space-y-3">
           {contracts.map((c) => (
-            <Card key={c.id} className="flex items-center gap-4 !p-4">
+            <Link key={c.id} href={`/panel/contrato/${c.id}`} className="block">
+            <Card className="flex items-center gap-4 !p-4 transition hover:border-mint-2">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-amber-bg text-lg">
                 🤝
               </span>
@@ -50,6 +52,7 @@ export default async function ContratacionesPage() {
                 {formatUSD(Number(c.amount))}
               </p>
             </Card>
+            </Link>
           ))}
         </div>
       )}
