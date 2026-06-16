@@ -3,6 +3,7 @@ import { CheckCircle2, ExternalLink } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader, Card } from "../_components/ui";
 import { ImageUploader } from "../_components/ImageUploader";
+import { CvImporter } from "./CvImporter";
 import { saveProfile } from "./actions";
 
 const input =
@@ -50,6 +51,8 @@ export default async function PerfilPage({
 
       <form action={saveProfile} className="space-y-6">
         <input type="hidden" name="role" value={role} />
+
+        {esPro && <CvImporter />}
 
         <Card>
           <h2 className="mb-4 font-display text-lg font-bold text-ink">
