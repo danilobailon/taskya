@@ -77,7 +77,14 @@ RESEND_API_KEY=                  # resend.com (opcional hasta tener dominio)
 RESEND_FROM=TaskYa <onboarding@resend.dev>
 LEAD_NOTIFY_EMAIL=leonardobailon64@gmail.com
 NEXT_PUBLIC_WHATSAPP=593983596313
+ANTHROPIC_API_KEY=               # console.anthropic.com — lee el CV en el onboarding
 ```
+
+> El **onboarding del profesional** (`/onboarding`) usa `ANTHROPIC_API_KEY` para
+> leer el CV/PDF con Claude y autocompletar el perfil. Si falta, el botón
+> "Importar mi CV" muestra un aviso y el usuario puede rellenar manualmente (el
+> resto del flujo funciona sin la key). **Hay que añadirla en Vercel** (Production)
+> para que el import funcione en producción.
 
 Estas mismas están cargadas en **Vercel** (Production). Si las editas, sube los
 valores **sin BOM** (ver gotcha en sección 9).
@@ -107,8 +114,12 @@ app/
 │   ├── mensajes/ reputacion/
 │   ├── usuarios/ finanzas/ disputas/   (admin)
 │   └── _components/     ui.tsx, admin.tsx, SidebarNav, ImageUploader (Storage)
+├── onboarding/          Wizard del profesional (importar CV con IA o manual)
+│   ├── Wizard.tsx       Cliente: pasos, barra de progreso, subida de CV
+│   ├── page.tsx actions.ts layout.tsx
 ├── _landing/            Landing antiguo (YA NO se usa; "/" ahora es el home Fiverr)
 ├── api/lead/            Captura de leads (Zod + Resend + Supabase)
+├── api/parse-cv/        Lee el CV/PDF con Claude y devuelve JSON del perfil
 ├── layout.tsx           Fuentes + metadata (raíz)
 └── globals.css          Sistema de diseño (tokens navy/ámbar + sombras)
 lib/
@@ -167,6 +178,13 @@ en *Table Editor > profiles*.
   avatar de perfil, portada + galería de cada servicio, e imágenes del portafolio
 - ✅ **Editar servicio** (`/panel/servicios/[id]/editar`) con formulario compartido
 - ✅ **Portafolio** del profesional (`/panel/portafolio`: subir/eliminar trabajos)
+- ✅ **Onboarding del profesional estilo Fiverr** (`/onboarding`, wizard multi-paso):
+  al registrarse/iniciar sesión como profesional sin perfil completo, se le lleva
+  a un asistente paso a paso (foto → profesión → categorías/idiomas/habilidades →
+  bio → resumen). Primer paso: **importar el CV (PDF) y autocompletar con IA**
+  (Claude lee el documento, ruta `app/api/parse-cv`) o rellenar manualmente.
+  Al terminar, va a publicar su primer servicio. *(Login social Google/Facebook
+  pendiente — se decidió "solo correo por ahora".)*
 
 ## 9. Lecciones / gotchas importantes (¡leer!)
 
@@ -211,6 +229,11 @@ en *Table Editor > profiles*.
 - [ ] **Wizard multi-paso** para crear servicio (hoy es un formulario por
   secciones en una sola página; funciona, pero se puede convertir en pasos).
 - [ ] **Menú móvil** del header público (hoy se condensa; falta el desplegable).
+- [ ] **Login social** (Google / Facebook): se decidió posponerlo; el wizard ya
+  está listo y solo faltaría conectar `signInWithOAuth` + callback + apps OAuth.
+- [ ] **Mejoras al import por IA**: hoy usa `claude-haiku-4-5` (barato, fase de
+  pruebas). Para máxima calidad de extracción, cambiar a `claude-opus-4-8` en
+  `app/api/parse-cv/route.ts`.
 
 ## 11. Cómo probar el flujo completo
 

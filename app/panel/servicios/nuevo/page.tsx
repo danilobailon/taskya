@@ -6,7 +6,12 @@ import { PageHeader } from "../../_components/ui";
 import { ServiceForm } from "../_components/ServiceForm";
 import { createService } from "../actions";
 
-export default async function NuevoServicioPage() {
+export default async function NuevoServicioPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ welcome?: string }>;
+}) {
+  const { welcome } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -21,6 +26,12 @@ export default async function NuevoServicioPage() {
       >
         <ArrowLeft className="h-4 w-4" /> Volver a mis servicios
       </Link>
+
+      {welcome && (
+        <div className="mb-6 rounded-xl bg-mint px-4 py-3 text-sm font-medium text-green-deep">
+          🎉 ¡Tu perfil está listo! Ahora publica tu primer servicio para empezar a recibir clientes.
+        </div>
+      )}
 
       <PageHeader
         eyebrow="Nuevo servicio"

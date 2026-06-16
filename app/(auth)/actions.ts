@@ -24,7 +24,8 @@ export async function signUp(formData: FormData) {
   if (!data.session) {
     redirect(`/registro?check=${encodeURIComponent(email)}`);
   }
-  redirect("/panel");
+  // Los profesionales pasan por el onboarding para armar su perfil.
+  redirect(role === "profesional" ? "/onboarding" : "/panel");
 }
 
 export async function signIn(formData: FormData) {
@@ -38,7 +39,28 @@ export async function signIn(formData: FormData) {
     redirect(`/login?error=${encodeURIComponent("Correo o contraseña incorrectos")}`);
   }
   const dest = String(formData.get("redirect") || "");
-  redirect(dest.startsWith("/") ? dest : "/panel");
+  if (dest.startsWith("/")) redirect(dest);
+
+  // Profesional sin ficha completa -> onboarding; el resto -> panel.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    if (profile?.role === "profesional") {
+      const { data: pro } = await supabase
+        .from("professionals")
+        .select("profession")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (!pro?.profession) redirect("/onboarding");
+    }
+  }
+  redirect("/panel");
 }
 
 export async function signOut() {
