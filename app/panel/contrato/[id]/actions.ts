@@ -3,6 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { notifyUser, otherParty } from "@/lib/notify";
+
+const path = (id: string) => `/panel/contrato/${id}`;
 
 async function getCtx(contractId: string) {
   const supabase = await createClient();
@@ -33,6 +36,13 @@ export async function acceptContract(formData: FormData) {
   const { supabase, contract, isPro } = await getCtx(id);
   if (isPro && contract.status === "solicitado") {
     await supabase.from("contracts").update({ status: "en_progreso" }).eq("id", id);
+    await notifyUser(contract.client_id, {
+      subject: "Tu solicitud fue aceptada en TaskYa",
+      title: "¡El profesional aceptó tu solicitud!",
+      message: `Tu contratación de «${contract.title}» está ahora en progreso.`,
+      ctaLabel: "Ver el contrato",
+      ctaPath: path(id),
+    });
   }
   refresh(id);
 }
@@ -43,6 +53,13 @@ export async function deliverContract(formData: FormData) {
   const { supabase, contract, isPro } = await getCtx(id);
   if (isPro && contract.status === "en_progreso") {
     await supabase.from("contracts").update({ status: "entregado" }).eq("id", id);
+    await notifyUser(contract.client_id, {
+      subject: "Tu trabajo fue entregado en TaskYa",
+      title: "El profesional marcó el trabajo como entregado",
+      message: `Revisa la entrega de «${contract.title}» y confírmala para liberar el pago.`,
+      ctaLabel: "Revisar y confirmar",
+      ctaPath: path(id),
+    });
   }
   refresh(id);
 }
@@ -64,6 +81,13 @@ export async function confirmContract(formData: FormData) {
       .from("professionals")
       .update({ jobs_done: (pro?.jobs_done ?? 0) + 1 })
       .eq("id", contract.professional_id);
+    await notifyUser(contract.professional_id, {
+      subject: "¡Entrega confirmada y pago liberado en TaskYa!",
+      title: "El cliente confirmó la entrega 🎉",
+      message: `Completaste «${contract.title}». El pago se libera a tu favor (menos la comisión de TaskYa).`,
+      ctaLabel: "Ver el contrato",
+      ctaPath: path(id),
+    });
   }
   refresh(id);
 }
@@ -71,9 +95,16 @@ export async function confirmContract(formData: FormData) {
 /** Cualquiera de las partes cancela (si no está completado/cancelado) */
 export async function cancelContract(formData: FormData) {
   const id = String(formData.get("id"));
-  const { supabase, contract } = await getCtx(id);
+  const { supabase, user, contract } = await getCtx(id);
   if (!["completado", "cancelado"].includes(contract.status)) {
     await supabase.from("contracts").update({ status: "cancelado" }).eq("id", id);
+    await notifyUser(otherParty(contract, user.id), {
+      subject: "Un contrato fue cancelado en TaskYa",
+      title: "Se canceló un contrato",
+      message: `El contrato «${contract.title}» fue cancelado.`,
+      ctaLabel: "Ver el contrato",
+      ctaPath: path(id),
+    });
   }
   refresh(id);
 }
@@ -83,10 +114,17 @@ export async function sendMessage(formData: FormData) {
   const id = String(formData.get("id"));
   const body = String(formData.get("body") || "").trim();
   if (!body) return;
-  const { supabase, user } = await getCtx(id);
+  const { supabase, user, contract } = await getCtx(id);
   await supabase
     .from("messages")
     .insert({ contract_id: id, sender_id: user.id, body });
+  await notifyUser(otherParty(contract, user.id), {
+    subject: "Nuevo mensaje en tu contrato de TaskYa",
+    title: "Tienes un mensaje nuevo",
+    message: `Hay un mensaje nuevo en el contrato «${contract.title}».`,
+    ctaLabel: "Responder",
+    ctaPath: path(id),
+  });
   refresh(id);
 }
 
@@ -121,6 +159,14 @@ export async function leaveReview(formData: FormData) {
     .from("professionals")
     .update({ rating: Math.round(avg * 10) / 10, reviews_count: count })
     .eq("id", contract.professional_id);
+
+  await notifyUser(contract.professional_id, {
+    subject: "Recibiste una nueva valoración en TaskYa",
+    title: `Te valoraron con ${rating} ⭐`,
+    message: `Un cliente dejó una reseña en «${contract.title}».${comment ? ` "${comment}"` : ""}`,
+    ctaLabel: "Ver mi reputación",
+    ctaPath: "/panel/reputacion",
+  });
 
   refresh(id);
 }

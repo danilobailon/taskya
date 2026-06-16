@@ -185,6 +185,13 @@ en *Table Editor > profiles*.
   (Claude lee el documento, ruta `app/api/parse-cv`) o rellenar manualmente.
   Al terminar, va a publicar su primer servicio. *(Login social Google/Facebook
   pendiente — se decidió "solo correo por ahora".)*
+- ✅ **Avisos por correo** (Resend, `lib/notify.ts`): al profesional cuando hay
+  nueva contratación / mensaje / reseña; al cliente en cambios de estado
+  (aceptado, entregado) y cancelaciones. Best-effort: si falta `RESEND_API_KEY`
+  no rompe el flujo.
+- ✅ **Páginas legales** `/terminos` y `/privacidad` (base en español, enlazadas
+  en el footer). Revisar con abogado antes de cobrar de verdad.
+- ✅ **Menú móvil** en el header público (hamburguesa desplegable).
 
 ## 9. Lecciones / gotchas importantes (¡leer!)
 

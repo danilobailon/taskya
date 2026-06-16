@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { MobileMenu } from "./MobileMenu";
 
 function supabaseReady() {
   return !!(
@@ -55,7 +56,7 @@ export async function SiteHeader() {
           </Link>
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto hidden items-center gap-2 md:flex">
           {signedIn ? (
             <Link
               href="/panel"
@@ -88,6 +89,10 @@ export async function SiteHeader() {
               </Link>
             </>
           )}
+        </div>
+
+        <div className="ml-auto md:hidden">
+          <MobileMenu signedIn={signedIn} />
         </div>
       </div>
     </header>

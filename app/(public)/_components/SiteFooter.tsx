@@ -61,6 +61,16 @@ export function SiteFooter() {
                 Iniciar sesión
               </Link>
             </li>
+            <li>
+              <Link href="/terminos" className="text-sm text-ink-mute transition hover:text-green">
+                Términos y Condiciones
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacidad" className="text-sm text-ink-mute transition hover:text-green">
+                Política de Privacidad
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -68,7 +78,11 @@ export function SiteFooter() {
       <div className="border-t border-[var(--line)]">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-ink-mute sm:flex-row sm:px-6">
           <p>© {new Date().getFullYear()} TaskYa · un producto de Initec Studio.</p>
-          <p>Hecho en Ecuador 🇪🇨</p>
+          <div className="flex items-center gap-4">
+            <Link href="/terminos" className="transition hover:text-green">Términos</Link>
+            <Link href="/privacidad" className="transition hover:text-green">Privacidad</Link>
+            <span>Hecho en Ecuador 🇪🇨</span>
+          </div>
         </div>
       </div>
     </footer>

@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { commission } from "@/lib/utils";
+import { notifyUser } from "@/lib/notify";
 
 export async function contratar(formData: FormData) {
   const serviceId = String(formData.get("serviceId"));
@@ -40,6 +41,15 @@ export async function contratar(formData: FormData) {
     })
     .select("id")
     .single();
+
+  // Avisar al profesional que tiene una nueva solicitud.
+  await notifyUser(service.professional_id, {
+    subject: "Nueva solicitud de contratación en TaskYa",
+    title: "Tienes una nueva solicitud 🎉",
+    message: `Un cliente quiere contratar tu servicio «${service.title}». Entra para revisarla y aceptarla.`,
+    ctaLabel: "Ver la solicitud",
+    ctaPath: `/panel/contrato/${contract?.id}`,
+  });
 
   redirect(`/panel/contrato/${contract?.id}`);
 }
