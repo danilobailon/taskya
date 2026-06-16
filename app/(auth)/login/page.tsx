@@ -5,9 +5,9 @@ import { signIn } from "../actions";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; redirect?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, redirect } = await searchParams;
 
   return (
     <div>
@@ -26,6 +26,7 @@ export default async function LoginPage({
       )}
 
       <form action={signIn} className="mt-8 space-y-4">
+        {redirect && <input type="hidden" name="redirect" value={redirect} />}
         <div className="space-y-1.5">
           <label className="text-sm font-semibold text-ink-soft">Correo</label>
           <input

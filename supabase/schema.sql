@@ -33,6 +33,8 @@ create table public.professionals (
   experience    text,
   portfolio_url text,
   categories    text[] default '{}',
+  languages     text[] default '{}',
+  skills        text[] default '{}',
   verified      boolean not null default false,
   rating        numeric(2,1) default 0,
   reviews_count int default 0,
@@ -52,8 +54,11 @@ create table public.services (
   includes        text[],
   price           numeric(10,2) not null,
   delivery_days   int,
+  revisions       int,
   city            text,
   cover_url       text,
+  gallery_urls    text[] default '{}',
+  faq             jsonb default '[]'::jsonb,
   status          service_status not null default 'activo',
   created_at      timestamptz not null default now()
 );
@@ -185,3 +190,50 @@ create policy "reviews cliente escribe" on public.reviews for insert with check 
 
 -- LEADS: nadie lee desde el cliente; se insertan vía service role en el server
 create policy "leads sin lectura" on public.leads for select using (false);
+
+-- ============================================================
+--  PORTFOLIO_ITEMS — trabajos del portafolio del profesional
+-- ============================================================
+create table public.portfolio_items (
+  id              uuid primary key default gen_random_uuid(),
+  professional_id uuid not null references public.professionals(id) on delete cascade,
+  title           text,
+  description     text,
+  image_url       text not null,
+  created_at      timestamptz not null default now()
+);
+create index portfolio_pro_idx on public.portfolio_items(professional_id);
+
+alter table public.portfolio_items enable row level security;
+create policy "portfolio lectura publica" on public.portfolio_items for select using (true);
+create policy "portfolio dueno gestiona" on public.portfolio_items for all
+  using (auth.uid() = professional_id) with check (auth.uid() = professional_id);
+
+-- ============================================================
+--  FAVORITES — servicios guardados por el cliente
+-- ============================================================
+create table public.favorites (
+  client_id  uuid not null references public.profiles(id) on delete cascade,
+  service_id uuid not null references public.services(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (client_id, service_id)
+);
+alter table public.favorites enable row level security;
+create policy "favoritos propios" on public.favorites for all
+  using (auth.uid() = client_id) with check (auth.uid() = client_id);
+
+-- ============================================================
+--  STORAGE — bucket público "media" para imágenes
+-- ============================================================
+insert into storage.buckets (id, name, public)
+values ('media', 'media', true)
+on conflict (id) do nothing;
+
+create policy "media lectura publica" on storage.objects for select
+  using (bucket_id = 'media');
+create policy "media subir propio" on storage.objects for insert to authenticated
+  with check (bucket_id = 'media' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy "media actualizar propio" on storage.objects for update to authenticated
+  using (bucket_id = 'media' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy "media borrar propio" on storage.objects for delete to authenticated
+  using (bucket_id = 'media' and (storage.foldername(name))[1] = auth.uid()::text);

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Briefcase, UserCog, CheckCircle2, Pause, Play } from "lucide-react";
+import { Plus, Briefcase, UserCog, CheckCircle2, Pause, Play, Pencil } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { formatUSD } from "@/lib/utils";
 import { PageHeader, EmptyState, Card, ButtonLink, StatusBadge } from "../_components/ui";
@@ -104,7 +104,7 @@ export default async function ServiciosPage({
                 <StatusBadge status={s.status} />
               </div>
               <Link
-                href={`/panel/servicio/${s.id}`}
+                href={`/servicio/${s.id}`}
                 className="font-display text-lg font-bold text-ink transition hover:text-green"
               >
                 {s.title}
@@ -123,25 +123,33 @@ export default async function ServiciosPage({
                     </p>
                   )}
                 </div>
-                <form action={toggleService}>
-                  <input type="hidden" name="id" value={s.id} />
-                  <input
-                    type="hidden"
-                    name="next"
-                    value={s.status === "activo" ? "pausado" : "activo"}
-                  />
-                  <button className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line-strong)] px-3 py-1.5 text-xs font-semibold text-ink-soft transition hover:bg-paper">
-                    {s.status === "activo" ? (
-                      <>
-                        <Pause className="h-3.5 w-3.5" /> Pausar
-                      </>
-                    ) : (
-                      <>
-                        <Play className="h-3.5 w-3.5" /> Activar
-                      </>
-                    )}
-                  </button>
-                </form>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/panel/servicios/${s.id}/editar`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line-strong)] px-3 py-1.5 text-xs font-semibold text-ink-soft transition hover:bg-paper"
+                  >
+                    <Pencil className="h-3.5 w-3.5" /> Editar
+                  </Link>
+                  <form action={toggleService}>
+                    <input type="hidden" name="id" value={s.id} />
+                    <input
+                      type="hidden"
+                      name="next"
+                      value={s.status === "activo" ? "pausado" : "activo"}
+                    />
+                    <button className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line-strong)] px-3 py-1.5 text-xs font-semibold text-ink-soft transition hover:bg-paper">
+                      {s.status === "activo" ? (
+                        <>
+                          <Pause className="h-3.5 w-3.5" /> Pausar
+                        </>
+                      ) : (
+                        <>
+                          <Play className="h-3.5 w-3.5" /> Activar
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
               </div>
             </Card>
           ))}

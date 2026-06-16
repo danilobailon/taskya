@@ -8,7 +8,7 @@ import SidebarNav, { type NavItem } from "./_components/SidebarNav";
 const NAV_BY_ROLE: Record<string, NavItem[]> = {
   cliente: [
     { href: "/panel", label: "Resumen", icon: "dashboard" },
-    { href: "/panel/buscar", label: "Buscar servicios", icon: "search" },
+    { href: "/servicios", label: "Buscar servicios", icon: "search" },
     { href: "/panel/contrataciones", label: "Mis contrataciones", icon: "briefcase" },
     { href: "/panel/mensajes", label: "Mensajes", icon: "message" },
     { href: "/panel/perfil", label: "Mi perfil", icon: "settings" },
@@ -16,6 +16,7 @@ const NAV_BY_ROLE: Record<string, NavItem[]> = {
   profesional: [
     { href: "/panel", label: "Resumen", icon: "dashboard" },
     { href: "/panel/servicios", label: "Mis servicios", icon: "briefcase" },
+    { href: "/panel/portafolio", label: "Portafolio", icon: "image" },
     { href: "/panel/contratos", label: "Contratos", icon: "wallet" },
     { href: "/panel/mensajes", label: "Mensajes", icon: "message" },
     { href: "/panel/reputacion", label: "Reputación", icon: "star" },

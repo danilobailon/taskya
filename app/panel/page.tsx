@@ -98,7 +98,7 @@ export default async function PanelHome() {
               : "Explora el catálogo, compara perfiles y contrata con pago protegido."}
           </p>
           <Link
-            href={esPro ? "/panel/servicios" : "/panel/buscar"}
+            href={esPro ? "/panel/servicios" : "/servicios"}
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-amber px-5 py-3 font-semibold text-ink transition hover:brightness-105"
           >
             {esPro ? <Plus className="h-4 w-4" /> : <Search className="h-4 w-4" />}

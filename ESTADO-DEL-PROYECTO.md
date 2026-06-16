@@ -3,7 +3,7 @@
 > Documento de continuidad. Resume todo lo construido para retomar el trabajo en
 > otra máquina o sesión sin perder contexto. **No contiene secretos** (repo público).
 
-Última actualización: 2026-06-12
+Última actualización: 2026-06-15
 
 ---
 
@@ -13,9 +13,17 @@
 Fiverr/Workana adaptado). Modelo: comisión del **15%** sobre cada trabajo
 completado. Producto de **Initec Studio**.
 
-Estado actual: **MVP funcional de punta a punta** — landing + registro/login +
-panel por rol + catálogo + flujo de contratación completo (custodia simulada),
-chat y valoraciones. Falta integrar pagos reales.
+Estado actual: **MVP funcional de punta a punta, reestructurado estilo Fiverr** —
+home/marketplace **público** + registro/login + panel por rol + catálogo público
+con filtros + página rica de servicio + **perfil público del profesional** +
+**portafolio** + **subida de imágenes (Supabase Storage)** + flujo de
+contratación completo (custodia simulada), chat y valoraciones. Falta integrar
+pagos reales.
+
+> ⚠️ **Antes de desplegar:** ejecutar `supabase/migration-fiverr.sql` en el SQL
+> Editor de Supabase. Añade el bucket `media`, columnas nuevas (galería, FAQ,
+> revisiones, idiomas, habilidades) y las tablas `portfolio_items` y `favorites`.
+> Sin esa migración, el panel dará error al subir imágenes o guardar el perfil.
 
 ## 2. Enlaces
 
@@ -78,46 +86,54 @@ valores **sin BOM** (ver gotcha en sección 9).
 
 ```
 app/
-├── _landing/            Landing pública (diseño aprobado, isla de CSS global)
-│   ├── Landing.tsx      Componente cliente (interacciones + inyecta el HTML)
-│   ├── markup.ts        HTML del landing (generado, no editar a mano)
-│   └── landing.css      Estilos del landing
+├── (public)/            MARKETPLACE PÚBLICO (sin login). Layout = header + footer.
+│   ├── layout.tsx       SiteHeader + SiteFooter (colores TaskYa)
+│   ├── page.tsx         Home estilo Fiverr (hero + buscador + categorías + destacados)
+│   ├── servicios/       Catálogo público con filtros (categoría, ciudad, precio, orden)
+│   ├── servicio/[id]/   Página rica del servicio: galería, descripción, reseñas, Contratar
+│   ├── profesional/[id]/  Perfil público: bio, stats, portafolio, servicios, reseñas
+│   └── _components/     SiteHeader, SiteFooter, SearchBar, ServiceCard, Stars, Gallery
 ├── (auth)/              Registro, login, layout y server actions de sesión
-│   ├── actions.ts       signUp / signIn / signOut
+│   ├── actions.ts       signUp / signIn (respeta ?redirect=) / signOut
 │   ├── login/ registro/
-├── panel/               Panel privado (protegido por proxy.ts)
+├── panel/               Panel privado (gestión, protegido por proxy.ts)
 │   ├── layout.tsx       Sidebar + navegación por rol + cerrar sesión
 │   ├── page.tsx         Resumen (dashboard)
-│   ├── perfil/          Editar perfil + ficha profesional
-│   ├── servicios/       Lista + crear servicio (profesional)
-│   ├── servicio/[id]/   Detalle de servicio + botón Contratar
-│   ├── buscar/          Catálogo con búsqueda y filtros (cliente)
-│   ├── contratos/       Lista de contratos (profesional)
-│   ├── contrataciones/  Lista de contrataciones (cliente)
-│   ├── contrato/[id]/   Detalle: estados + chat + valoración
+│   ├── perfil/          Editar perfil + ficha pro (avatar, idiomas, habilidades)
+│   ├── servicios/       Lista (con Editar/Pausar) + nuevo/ + [id]/editar/
+│   │   └── _components/ServiceForm.tsx   Formulario compartido crear/editar (con galería)
+│   ├── portafolio/      Subir/eliminar trabajos del portafolio (profesional)
+│   ├── contratos/ contrataciones/ contrato/[id]/  Contratación + chat + valoración
 │   ├── mensajes/ reputacion/
 │   ├── usuarios/ finanzas/ disputas/   (admin)
-│   └── _components/      ui.tsx (PageHeader, EmptyState, Card...), admin.tsx, SidebarNav
+│   └── _components/     ui.tsx, admin.tsx, SidebarNav, ImageUploader (Storage)
+├── _landing/            Landing antiguo (YA NO se usa; "/" ahora es el home Fiverr)
 ├── api/lead/            Captura de leads (Zod + Resend + Supabase)
-├── layout.tsx           Fuentes + metadata
-└── globals.css          Sistema de diseño (tokens navy/ámbar)
+├── layout.tsx           Fuentes + metadata (raíz)
+└── globals.css          Sistema de diseño (tokens navy/ámbar + sombras)
 lib/
 ├── supabase/            client.ts (browser), server.ts (server + service role), middleware.ts
+├── categories.ts        Fuente única de categorías + iconos
 ├── email.ts             Resend
 └── utils.ts             cn, formatUSD, commission (15%)
-proxy.ts                 Refresca sesión + protege /panel (antes "middleware")
-supabase/schema.sql      Esquema completo de la base de datos
-scripts/extract-landing.mjs   Extrae CSS+HTML del landing original
+proxy.ts                 Refresca sesión + protege /panel (solo /panel es privado)
+supabase/schema.sql      Esquema completo (fuente para proyectos nuevos)
+supabase/migration-fiverr.sql   Migración para la BD ya aplicada (Storage + columnas + tablas)
 legacy/                  Landing original en HTML + PDF de validación (referencia)
 ```
 
 ## 7. Base de datos (Supabase)
 
-El esquema está en `supabase/schema.sql`. **Ya fue aplicado** en el proyecto
-actual. Si se recrea el proyecto, ejecutarlo en *Supabase > SQL Editor*.
+El esquema completo está en `supabase/schema.sql` (úsalo para proyectos nuevos).
+Para la BD **ya aplicada**, ejecutar la migración incremental
+`supabase/migration-fiverr.sql` en *Supabase > SQL Editor* (es idempotente).
+Añade: bucket de Storage `media` + sus políticas, columnas nuevas en `services`
+(`gallery_urls`, `revisions`, `faq`) y `professionals` (`languages`, `skills`),
+y las tablas `portfolio_items` y `favorites`.
 
 Tablas: `profiles` (extiende auth.users, con rol), `professionals`, `services`,
-`contracts`, `messages`, `reviews`, `leads`. Incluye:
+`contracts`, `messages`, `reviews`, `leads`, `portfolio_items`, `favorites`.
+Incluye:
 - **Trigger** `on_auth_user_created`: crea el `profile` automáticamente al registrarse.
 - **RLS** activado en todas las tablas con políticas por rol/propiedad.
 
@@ -140,6 +156,17 @@ en *Table Editor > profiles*.
   el rating del profesional
 - ✅ **Admin**: usuarios (tabla), finanzas (GMV + comisión), disputas
 - ✅ **Captura de leads** (la landing antes mandaba a WhatsApp; ahora va al registro)
+- ✅ **Marketplace público estilo Fiverr** (reestructuración 2026-06-15):
+  - **Home** `/` con hero + buscador grande + categorías con iconos + destacados + "cómo funciona"
+  - **Catálogo público** `/servicios` con filtros (categoría, ciudad, precio máx, orden)
+  - **Página rica de servicio** `/servicio/[id]` con galería (visor + miniaturas),
+    descripción, reseñas y caja de contratación (login solo al contratar)
+  - **Perfil público del profesional** `/profesional/[id]` con stats, portafolio,
+    idiomas/habilidades, sus servicios y reseñas
+- ✅ **Subida de imágenes** (Supabase Storage, bucket `media`, carpeta por usuario):
+  avatar de perfil, portada + galería de cada servicio, e imágenes del portafolio
+- ✅ **Editar servicio** (`/panel/servicios/[id]/editar`) con formulario compartido
+- ✅ **Portafolio** del profesional (`/panel/portafolio`: subir/eliminar trabajos)
 
 ## 9. Lecciones / gotchas importantes (¡leer!)
 
@@ -147,9 +174,15 @@ en *Table Editor > profiles*.
    PowerShell les mete un BOM (U+FEFF) invisible que rompe los headers HTTP
    (`ByteString ... 65279`). Subirlas con archivo limpio + `cmd /c "vercel env
    add NAME production < archivo"` o con `printf`/Bash. Verificar con la longitud.
-2. **El landing es una "isla" de CSS global** (`landing.css` tiene reglas como
-   `button{}`). Por eso la navegación del landing al registro usa `href` nativo
-   (carga completa), NO `router.push`, para que no se filtren estilos.
+2. **El landing antiguo (`app/_landing/`) YA NO se usa.** Desde 2026-06-15 la
+   ruta `/` es el nuevo home estilo Fiverr (`app/(public)/page.tsx`), construido
+   con los tokens de `globals.css` (no con la isla de CSS del landing). Los
+   archivos de `_landing/` quedan como referencia; se pueden borrar.
+   - **Solo `/panel` es privado** (lo fuerza `lib/supabase/middleware.ts`). El
+     resto del marketplace es público; las políticas RLS ya permiten lectura
+     anónima de servicios activos, profesionales y perfiles.
+   - **Imágenes:** se suben desde el navegador a Supabase Storage (bucket
+     `media`) y se guardan las URLs públicas en la BD. Requiere la migración.
 3. **Supabase free = 2 proyectos POR USUARIO** (no por organización). Por eso la
    BD de TaskYa está en la cuenta de Leonardo (Danilo ya tenía 2: Initec + Mabel).
 4. **"Confirm email" activado** (recomendado en producción). El registro muestra
@@ -168,9 +201,16 @@ en *Table Editor > profiles*.
   de usuario, moderación de servicios, verificación de profesionales.
 - [ ] **Dominio propio** `taskya.net` (Namecheap): correo `contacto@taskya.net`
   con reenvío + verificar dominio en Resend + SMTP propio en Supabase Auth.
-- [ ] **Perfil público** del profesional (página visible para clientes).
+- [x] ~~**Perfil público** del profesional~~ ✅ hecho (`/profesional/[id]`).
 - [ ] Notificaciones (correo cuando hay nueva propuesta/mensaje/contrato).
 - [ ] Hacer a **Leonardo admin** (cambiar su `role` a `admin` en Supabase).
+- [ ] **Favoritos / guardados**: la tabla `favorites` ya existe; falta la UI
+  (botón de corazón en las tarjetas + página "Guardados" del cliente).
+- [ ] **FAQ y revisiones en la página de servicio**: las columnas `faq` y
+  `revisions` ya existen; falta el editor en el formulario y mostrarlas en el gig.
+- [ ] **Wizard multi-paso** para crear servicio (hoy es un formulario por
+  secciones en una sola página; funciona, pero se puede convertir en pasos).
+- [ ] **Menú móvil** del header público (hoy se condensa; falta el desplegable).
 
 ## 11. Cómo probar el flujo completo
 

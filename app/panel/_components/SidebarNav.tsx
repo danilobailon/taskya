@@ -12,6 +12,7 @@ import {
   Settings,
   ShieldCheck,
   Users,
+  Image as ImageIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ const ICONS = {
   settings: Settings,
   shield: ShieldCheck,
   users: Users,
+  image: ImageIcon,
 } as const;
 
 export type NavItem = {

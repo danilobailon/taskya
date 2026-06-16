@@ -30,7 +30,7 @@ export default async function ContratacionesPage() {
           title="Aún no has contratado nada"
           description="Explora el catálogo, encuentra al profesional ideal y contrata con pago protegido."
           action={
-            <ButtonLink href="/panel/buscar" variant="amber" icon={Search}>
+            <ButtonLink href="/servicios" variant="amber" icon={Search}>
               Buscar servicios
             </ButtonLink>
           }

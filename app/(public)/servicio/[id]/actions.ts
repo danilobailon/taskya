@@ -10,7 +10,7 @@ export async function contratar(formData: FormData) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) redirect(`/login?redirect=/servicio/${serviceId}`);
 
   const { data: service } = await supabase
     .from("services")
@@ -19,11 +19,11 @@ export async function contratar(formData: FormData) {
     .single();
 
   if (!service || service.status !== "activo") {
-    redirect(`/panel/servicio/${serviceId}?error=nodisponible`);
+    redirect(`/servicio/${serviceId}?error=nodisponible`);
   }
   // No puedes contratarte a ti mismo
   if (service.professional_id === user.id) {
-    redirect(`/panel/servicio/${serviceId}?error=propio`);
+    redirect(`/servicio/${serviceId}?error=propio`);
   }
 
   const amount = Number(service.price);

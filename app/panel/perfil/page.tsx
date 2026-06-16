@@ -1,6 +1,8 @@
-import { CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { CheckCircle2, ExternalLink } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader, Card } from "../_components/ui";
+import { ImageUploader } from "../_components/ImageUploader";
 import { saveProfile } from "./actions";
 
 const input =
@@ -53,6 +55,23 @@ export default async function PerfilPage({
           <h2 className="mb-4 font-display text-lg font-bold text-ink">
             Datos personales
           </h2>
+
+          <div className="mb-5 flex items-center gap-4">
+            <ImageUploader
+              name="avatar_url"
+              userId={user!.id}
+              folder="avatar"
+              shape="avatar"
+              defaultUrls={profile?.avatar_url ? [profile.avatar_url] : []}
+            />
+            <div>
+              <p className="text-sm font-semibold text-ink-soft">Foto de perfil</p>
+              <p className="text-xs text-ink-mute">
+                Una foto real genera más confianza. Cuadrada se ve mejor.
+              </p>
+            </div>
+          </div>
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5 sm:col-span-2">
               <label className={label}>Nombre completo</label>
@@ -157,7 +176,32 @@ export default async function PerfilPage({
                   placeholder="https://..."
                 />
               </div>
+              <div className="space-y-1.5">
+                <label className={label}>Idiomas (separados por coma)</label>
+                <input
+                  name="languages"
+                  defaultValue={(pro?.languages ?? []).join(", ")}
+                  className={input}
+                  placeholder="Español, Inglés"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className={label}>Habilidades (separadas por coma)</label>
+                <input
+                  name="skills"
+                  defaultValue={(pro?.skills ?? []).join(", ")}
+                  className={input}
+                  placeholder="AutoCAD, Revit, SketchUp"
+                />
+              </div>
             </div>
+
+            <Link
+              href={`/profesional/${user!.id}`}
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-green transition hover:gap-2.5"
+            >
+              <ExternalLink className="h-4 w-4" /> Ver mi perfil público
+            </Link>
           </Card>
         )}
 

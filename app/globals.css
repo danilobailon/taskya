@@ -46,6 +46,10 @@
   --radius-card: 22px;
   --radius-lg: 30px;
 
+  --shadow-sm: 0 1px 2px rgba(15, 27, 40, 0.06);
+  --shadow-md: 0 8px 24px -8px rgba(15, 27, 40, 0.16);
+  --shadow-lg: 0 24px 60px -20px rgba(15, 27, 40, 0.28);
+
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.45, 0.5, 1);
 }

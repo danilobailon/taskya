@@ -37,7 +37,8 @@ export async function signIn(formData: FormData) {
   if (error) {
     redirect(`/login?error=${encodeURIComponent("Correo o contraseña incorrectos")}`);
   }
-  redirect("/panel");
+  const dest = String(formData.get("redirect") || "");
+  redirect(dest.startsWith("/") ? dest : "/panel");
 }
 
 export async function signOut() {
