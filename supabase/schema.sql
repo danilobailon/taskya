@@ -77,6 +77,11 @@ create table public.contracts (
   amount          numeric(10,2) not null,
   commission      numeric(10,2) not null,      -- 15%
   status          contract_status not null default 'solicitado',
+  payment_status  text not null default 'pendiente',  -- pendiente|pagado|liberado|reembolsado
+  payment_method  text,
+  payment_ref     text,
+  paid_at         timestamptz,
+  released_at     timestamptz,
   created_at      timestamptz not null default now()
 );
 create index contracts_client_idx on public.contracts(client_id);

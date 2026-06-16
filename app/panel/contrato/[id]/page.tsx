@@ -53,6 +53,14 @@ export default async function ContratoDetallePage({
   const amount = Number(contract.amount);
   const stepIdx = STEPS.indexOf(status);
 
+  const PAY: Record<string, { label: string; cls: string }> = {
+    pendiente: { label: "Pendiente", cls: "bg-amber-bg text-amber" },
+    pagado: { label: "En custodia", cls: "bg-mint text-green-deep" },
+    liberado: { label: "Liberado", cls: "bg-green text-white" },
+    reembolsado: { label: "Reembolsado", cls: "bg-paper-2 text-ink-mute" },
+  };
+  const pay = PAY[(contract.payment_status as string) || "pendiente"] ?? PAY.pendiente;
+
   return (
     <div className="mx-auto max-w-4xl">
       <Link
@@ -319,6 +327,12 @@ export default async function ContratoDetallePage({
                 {isClient
                   ? formatUSD(amount)
                   : formatUSD(amount - Number(contract.commission))}
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-t border-[var(--line)] pt-2">
+              <span className="text-ink-mute">Estado del pago</span>
+              <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${pay.cls}`}>
+                {pay.label}
               </span>
             </div>
           </div>

@@ -20,10 +20,14 @@ con filtros + página rica de servicio + **perfil público del profesional** +
 contratación completo (custodia simulada), chat y valoraciones. Falta integrar
 pagos reales.
 
-> ⚠️ **Antes de desplegar:** ejecutar `supabase/migration-fiverr.sql` en el SQL
-> Editor de Supabase. Añade el bucket `media`, columnas nuevas (galería, FAQ,
-> revisiones, idiomas, habilidades) y las tablas `portfolio_items` y `favorites`.
-> Sin esa migración, el panel dará error al subir imágenes o guardar el perfil.
+> ⚠️ **Antes de desplegar:** ejecutar en el SQL Editor de Supabase, en orden:
+> 1. `supabase/migration-fiverr.sql` — bucket `media`, columnas (galería, FAQ,
+>    revisiones, idiomas, habilidades), tablas `portfolio_items` y `favorites`.
+> 2. `supabase/migration-pagos.sql` — campos de pago en `contracts`
+>    (`payment_status`, `paid_at`, `released_at`, `payment_ref`, `payment_method`).
+>
+> Sin estas migraciones el panel dará error al subir imágenes, guardar perfil o
+> registrar pagos.
 
 ## 2. Enlaces
 
@@ -192,6 +196,9 @@ en *Table Editor > profiles*.
 - ✅ **Páginas legales** `/terminos` y `/privacidad` (base en español, enlazadas
   en el footer). Revisar con abogado antes de cobrar de verdad.
 - ✅ **Menú móvil** en el header público (hamburguesa desplegable).
+- ✅ **Pago manual (puente antes de PayPhone)**: el admin marca cada contrato como
+  **pagado** (en custodia) y **liberado** desde *Finanzas*; el estado de pago se
+  ve en el contrato. Métrica "En custodia" en el dashboard. (`migration-pagos.sql`)
 
 ## 9. Lecciones / gotchas importantes (¡leer!)
 
@@ -217,10 +224,12 @@ en *Table Editor > profiles*.
 
 ## 10. Pendientes / roadmap
 
-- [ ] **Pagos reales** (PayPhone / Kushki). Hoy la custodia está *simulada* a
-  nivel de estados. Modelo: cliente paga → dinero en cuenta de TaskYa (custodia)
-  → al confirmar, 85% al profesional + 15% comisión. Requiere asesoría contable
-  (TaskYa retiene dinero de terceros).
+- [ ] **Pasarela real: PayPhone** (decidido). Hoy el pago se registra **manual**
+  desde Finanzas (puente). Falta: cuenta de desarrollador PayPhone + credenciales
+  (cargar en Vercel/.env), cobro al contratar → ruta de confirmación/webhook que
+  marque `payment_status='pagado'`, y el payout al profesional (manual al inicio).
+  Modelo: cliente paga → custodia TaskYa → al completar, 85% pro + 15% comisión.
+  Requiere asesoría contable (TaskYa retiene dinero de terceros).
 - [ ] **Auto-liberación por tiempo** (si el cliente no confirma en X días).
 - [ ] **Admin enriquecido**: dashboard con KPIs (liquidez, activación), vista 360
   de usuario, moderación de servicios, verificación de profesionales.
