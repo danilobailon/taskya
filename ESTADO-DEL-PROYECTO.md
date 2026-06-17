@@ -3,7 +3,7 @@
 > Documento de continuidad. Resume todo lo construido para retomar el trabajo en
 > otra máquina o sesión sin perder contexto. **No contiene secretos** (repo público).
 
-Última actualización: 2026-06-15
+Última actualización: 2026-06-16
 
 ---
 
@@ -187,8 +187,10 @@ en *Table Editor > profiles*.
   a un asistente paso a paso (foto → profesión → categorías/idiomas/habilidades →
   bio → resumen). Primer paso: **importar el CV (PDF) y autocompletar con IA**
   (Claude lee el documento, ruta `app/api/parse-cv`) o rellenar manualmente.
-  Al terminar, va a publicar su primer servicio. *(Login social Google/Facebook
-  pendiente — se decidió "solo correo por ahora".)*
+  Al terminar, va a publicar su primer servicio. El **mismo importador de CV/PDF
+  está también en "Mi perfil"** (`app/panel/perfil/CvImporter.tsx`) para que un
+  profesional con cuenta actualice su perfil rápido. *(Login social
+  Google/Facebook pendiente — se decidió "solo correo por ahora".)*
 - ✅ **Avisos por correo** (Resend, `lib/notify.ts`): al profesional cuando hay
   nueva contratación / mensaje / reseña; al cliente en cambios de estado
   (aceptado, entregado) y cancelaciones. Best-effort: si falta `RESEND_API_KEY`
